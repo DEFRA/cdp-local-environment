@@ -1,0 +1,137 @@
+version: "3.4"
+
+services:
+################################################################################
+# All of the infrastructure services
+################################################################################
+  mongodb:
+    image: mongo:6
+    container_name: cdp-infra-mongodb
+    network_mode: "host"
+    ports:
+      - 27017:27017
+    volumes:
+      - cdp-infra-mongodb-data:/data
+    restart: always
+
+################################################################################
+  localstack:
+    image: localstack/localstack:2.2
+    container_name: cdp-infra-localstack
+    network_mode: "host"
+    ports:
+      - 4566:4566
+      - 4510-4559:4510-4559
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "localhost:4566"]
+      interval: 1m30s
+      start_period: 5s
+      retries: 3
+
+################################################################################
+  redis:
+    image: redis:7.0-alpine
+    network_mode: "host"
+    container_name: cdp-infra-redis
+    ports:
+      - 6379:6379
+    restart: always
+
+################################################################################
+# Portal Init script
+################################################################################
+  setup-cdp-portal:
+    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-local-setup:latest
+    network_mode: "host"
+    env_file:
+      - ./config/local-defaults.env
+    depends_on:
+      - localstack
+      - mongodb
+      - redis
+    volumes:
+      - ./scripts/portal:/scripts:ro
+    restart: "no"
+    profiles:
+      - portal
+
+################################################################################
+  cdp-portal-frontend:
+    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
+    container_name: cdp-portal-frontend
+    network_mode: "host"
+    env_file:
+      - ./config/local-defaults.env
+      - ./config/cdp-portal-frontend.env
+    environment:
+      - PORT=3000
+    profiles:
+      - portal
+
+################################################################################
+  cdp-teams-and-repositories:
+    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-teams-and-repositories:${CDP_TEAMS_AND_REPOSITORIES:-latest}
+    container_name: cdp-teams-and-repositories
+    network_mode: "host"
+    ports:
+      - 3002:3002
+    env_file:
+      - ./config/local-defaults.env
+      - ./config/cdp-teams-and-repositories.env
+    environment:
+      - PORT=3008
+    depends_on:
+      - mongodb
+    profiles:
+      - portal
+
+################################################################################
+  cdp-deployments:
+    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-deployments:${CDP_DEPLOYMENTS:-latest}
+    container_name: cdp-deployments
+    network_mode: "host"
+    env_file:
+      - ./config/local-defaults.env
+      - ./config/cdp-deployments.env
+    environment:
+      - ASPNETCORE_URLS=http://+:5070
+    depends_on:
+      setup-cdp-portal:
+        condition: service_completed_successfully
+    profiles:
+      - portal
+
+################################################################################
+  cdp-deployables:
+    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-deployables-backend:${CDP_DEPLOYABLES:-latest}
+    container_name: cdp-deployables
+    network_mode: "host"
+    env_file:
+      - ./config/local-defaults.env
+      - ./config/cdp-deployables.env
+    environment:
+      - ASPNETCORE_URLS=http://+:5094
+    depends_on:
+      setup-cdp-portal:
+        condition: service_completed_successfully
+    profiles:
+      - portal
+
+################################################################################
+  cdp-self-service-ops:
+    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-self-service-ops:${CDP_SELF_SERVICE_OPS:-latest}
+    container_name: cdp-self-service-ops
+    network_mode: "host"
+    env_file:
+      - ./config/local-defaults.env
+      - ./config/cdp-self-service-ops.env
+    environment:
+      - PORT=3009
+    profiles:
+      - portal
+
+################################################################################
+
+volumes:
+  cdp-infra-mongodb-data:
