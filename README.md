@@ -62,13 +62,15 @@ First, add the service definition to the compose.yml:
 ```
 
 You'll need to replace:
-----------------------------------------------------------------------------------------------------|
+
+|                 |                                                                                 |
+|---------------------------------------------------------------------------------------------------|
 | service-name    | actual service name (multiple places: section header, container_name, env_file) |
 | image-name      | name of docker image, generally same as service-name                            |
 | PORT            | a unique port number, not used by other services in the profile (nodejs only)   |
 | ASPNETCORE_URLS | a unique port number, not used by other services in the profile (c# only)       |
 | profile-name    | the same of the profile its part of                                             |
------------------------------------------------------------------------------------------------------
+
 
 Next you'll need to create a new .env file for your service in `./config`. The file name should match the name defined in the `env_file` section of the service definition.
 You can place any config settings that are required to run that service locally in that file.
