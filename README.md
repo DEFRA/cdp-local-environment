@@ -26,6 +26,22 @@ The mongodb instance is persistend to a volume called `cdp-infra-mongodb`. Redis
 $ docker compose --profile portal up
 ```
 
+### Running a different version
+By default the profile will run the latest version of the image.
+You can override this by setting the SERVICE_NAME variable to be the version you need.
+This can either be done as an export or as part of the command, for example:
+```
+$ CDP_PORTAL_FRONTEND=0.66.0 CDP_SELF_SERVICE_OPS=0.10.0 docker compose --profile portal up
+```
+
+or as env vars
+```sh
+$ export CDP_PORTAL_FRONTEND=0.66.0
+$ export CDP_SELF_SERVICE_OPS=0.10.0
+docker compose --profile portal up
+```
+
+
 ## Adding services and Creating a profile
 
 First, add the service definition to the compose.yml:
