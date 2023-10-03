@@ -12,12 +12,10 @@ services:
       - Mongo__DatabaseUri=mongodb://mongodb:27888
       - EcsEvents__QueueUrl=localstack:4566/000000000000/ecs-deployments
       - EcrEvents__QueueUrl=localstack:4566/000000000000/ecr-push-events
-    env_file:
-      - secrets.env
-
+      - Github__Token
   cdp-portal-frontend:
     container_name: cdp-portal-frontend
-    image: cdp-portal-frontend:0.132.0
+    image: cdp-portal-frontend:0.33.0
     depends_on:
       - redis
     environment:
@@ -28,8 +26,7 @@ services:
       - CACHE_HOST=redis
       - PORT=80
       - NON_CLUSTER_CACHE=true
-    env_file:
-      - secrets.env
+      - AZURE_CLIENT_SECRET
     ports:
       - "3000:80"
   cdp-teams-and-repositories:
@@ -40,6 +37,7 @@ services:
     environment:
       - MONGO_URI=mongodb://mongodb:27888
       - PORT=80
+      - GITHUB_API_AUTH_APP_PRIVATE_KEY
   cdp-user-service-backend:
     container_name: cdp-user-service-backend
     image: cdp-user-service-backend:0.35.0
@@ -48,9 +46,7 @@ services:
     environment:
       - MONGO_URI=mongodb://mongodb:27888
       - PORT=80
-      - GITHUB_API_AUTH_APP_PRIVATE_KEY
-    env_file:
-      - secrets.env
+      - AZURE_CLIENT_SECRET
   cdp-self-service-ops:
     container_name: cdp-self-service-ops
     image: cdp-self-service-ops:0.54.0
@@ -59,8 +55,7 @@ services:
     environment:
       - MONGO_URI=mongodb://mongodb:27888
       - PORT=80
-    env_file:
-      - secrets.env
+      - GITHUB_API_AUTH_APP_PRIVATE_KEY
 
   mongodb:
     image: mongo
