@@ -1,0 +1,12 @@
+[submodule "cdp-portal-frontend"]
+	path = cdp-portal-frontend
+	url = https://x-access-token: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@github.com/defra-cdp-sandpit/cdp-portal-frontend.git
+[submodule "cdp-portal-backend"]
+	path = cdp-portal-backend
+	url = https://x-access-token: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@github.com/defra-cdp-sandpit/cdp-portal-backend.git
+[submodule "cdp-user-service-backend"]
+	path = cdp-user-service-backend
+	url = https://x-access-token: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@github.com/defra-cdp-sandpit/cdp-user-service-backend.git
+[submodule "cdp-teams-and-repositories"]
+	path = cdp-teams-and-repositories
+	url = https://x-access-token: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@github.com/defra-cdp-sandpit/cdp-teams-and-repositories.git

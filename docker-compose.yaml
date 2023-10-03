@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  cdp-portal-backend:
+    container_name: cdp-portal-backend
+    image: cdp-portal-backend:0.33.0
+    depends_on:
+      - mongodb
+      - localstack
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Mongo__DatabaseUri=mongodb://mongodb:27888
+      - EcsEvents__QueueUrl=localstack:4566/000000000000/ecs-deployments
+      - EcrEvents__QueueUrl=localstack:4566/000000000000/ecr-push-events
+    env_file:
+      - secrets.env
+
+  cdp-portal-frontend:
+    container_name: cdp-portal-frontend
+    image: cdp-portal-frontend:0.132.0
+    depends_on:
+      - redis
+    environment:
+      - TEAMS_AND_REPOSITORIES_API_URL="http://cdp-teams-and-repositories/cdp-teams-and-repositories"
+      - PORTAL_BACKEND_API_URL=http://cdp-portal-backend/cdp-portal-backend
+      - SELF_SERVICE_OPS_API_URL=http://cdp-self-service-ops/cdp-self-sevice-ops
+      - USER_SERVICE_API_URL=http://cdp-user-service-backend/cdp-user-service-backend
+      - CACHE_HOST=redis
+      - PORT=80
+      - NON_CLUSTER_CACHE=true
+    env_file:
+      - secrets.env
+    ports:
+      - "3000:80"
+  cdp-teams-and-repositories:
+    container_name: cdp-teams-and-repositories
+    image: cdp-teams-and-repositories:0.40.0
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27888
+      - PORT=80
+  cdp-user-service-backend:
+    container_name: cdp-user-service-backend
+    image: cdp-user-service-backend:0.35.0
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27888
+      - PORT=80
+      - GITHUB_API_AUTH_APP_PRIVATE_KEY
+    env_file:
+      - secrets.env
+  cdp-self-service-ops:
+    container_name: cdp-self-service-ops
+    image: cdp-self-service-ops:0.54.0
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27888
+      - PORT=80
+    env_file:
+      - secrets.env
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    command: mongod --port 27888
+    ports:
+      - "27888:27888"
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+#    ports:  # uncomment this if you want to use for local development
+#      - '6379:6379'
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:latest
+    environment:
+      - SERVICES=sqs,sns
+      - AWS_DEFAULT_REGION=eu-central-1
+      - EDGE_PORT=4566
+#    ports:  # uncomment this if you want to use for local development
+#      - '4566-4597:4566-4597'
