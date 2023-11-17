@@ -45,10 +45,16 @@ services:
     network_mode: "host"
 
 ################################################################################
+  cdp-mock-oidc:
+    image: cdp-mock-oidc
+    container_name: cdp-mock-oidc
+    network_mode: "host"
+      
+################################################################################
 # Portal Init script
 ################################################################################
   setup-cdp-portal:
-    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-local-setup:latest
+    image: cdp-local-setup:latest
     network_mode: "host"
     env_file:
       - ./config/local-defaults.env
@@ -64,7 +70,7 @@ services:
 
 ################################################################################
   cdp-portal-frontend:
-    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
+    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
     container_name: cdp-portal-frontend
     network_mode: "host"
     env_file:
@@ -72,36 +78,24 @@ services:
       - ./config/cdp-portal-frontend.env
     environment:
       - PORT=3000
+    depends_on:
+      setup-cdp-portal:
+        condition: service_completed_successfully
     profiles:
       - portal
 
 ################################################################################
-  cdp-teams-and-repositories:
-    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-teams-and-repositories:${CDP_TEAMS_AND_REPOSITORIES:-latest}
-    container_name: cdp-teams-and-repositories
+  cdp-user-service-backend:
+    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-user-service-backend:${CDP_USER_SERVICE_BACKEND:-latest}
+    container_name: cdp-user-service-backend
     network_mode: "host"
     ports:
       - 3002:3002
     env_file:
       - ./config/local-defaults.env
-      - ./config/cdp-teams-and-repositories.env
+      - ./config/cdp-user-service-backend.env
     environment:
-      - PORT=3008
-    depends_on:
-      - mongodb
-    profiles:
-      - portal
-
-################################################################################
-  cdp-deployments:
-    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-deployments:${CDP_DEPLOYMENTS:-latest}
-    container_name: cdp-deployments
-    network_mode: "host"
-    env_file:
-      - ./config/local-defaults.env
-      - ./config/cdp-deployments.env
-    environment:
-      - ASPNETCORE_URLS=http://+:5070
+      - PORT=3001
     depends_on:
       setup-cdp-portal:
         condition: service_completed_successfully
@@ -109,31 +103,49 @@ services:
       - portal
 
 ################################################################################
-  cdp-deployables:
-    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-deployables-backend:${CDP_DEPLOYABLES:-latest}
-    container_name: cdp-deployables
+  cdp-portal-backend:
+    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-backend:${CDP_PORTAL_BACKEND:-latest}
+    container_name: cdp-portal-backend
     network_mode: "host"
     env_file:
       - ./config/local-defaults.env
-      - ./config/cdp-deployables.env
+      - ./config/cdp-portal-backend.env
     environment:
       - ASPNETCORE_URLS=http://+:5094
     depends_on:
       setup-cdp-portal:
         condition: service_completed_successfully
+      cdp-user-service-backend:
+        condition: service_started
     profiles:
       - portal
 
 ################################################################################
   cdp-self-service-ops:
-    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/cdp-self-service-ops:${CDP_SELF_SERVICE_OPS:-latest}
+    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-self-service-ops:${CDP_SELF_SERVICE_OPS:-latest}
     container_name: cdp-self-service-ops
     network_mode: "host"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-self-service-ops.env
+    depends_on:
+      setup-cdp-portal:
+        condition: service_completed_successfully
     environment:
       - PORT=3009
+    profiles:
+      - portal
+
+################################################################################
+  cdp-portal-stubs:
+    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-stubs:${CDP_PORTAL_STUBS:-latest}
+    container_name: cdp-portal-stubs
+    network_mode: "host"
+    env_file:
+      - ./config/local-defaults.env
+      - ./config/cdp-portal-stubs.env
+    environment:
+      - PORT=3939
     profiles:
       - portal
 
