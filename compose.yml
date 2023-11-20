@@ -10,19 +10,21 @@ services:
     network_mode: "host"
     ports:
       - 27017:27017
-    volumes:
-      - cdp-infra-mongodb-data:/data
+        #volumes:
+        #- cdp-infra-mongodb-data:/data
     restart: always
 
 ################################################################################
   localstack:
-    image: localstack/localstack:2.2
+    image: localstack/localstack:3.0
     container_name: cdp-infra-localstack
     network_mode: "host"
     ports:
       - 4566:4566
       - 4510-4559:4510-4559
     restart: always
+    environment:
+      - LOCALSTACK_HOST=127.0.0.1
     healthcheck:
       test: ["CMD", "curl", "localhost:4566"]
       interval: 5s
@@ -59,9 +61,12 @@ services:
     env_file:
       - ./config/local-defaults.env
     depends_on:
-      - localstack
-      - mongodb
-      - redis
+      localstack:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      redis:
+        condition: service_started
     volumes:
       - ./scripts/portal:/scripts:ro
     restart: "no"
