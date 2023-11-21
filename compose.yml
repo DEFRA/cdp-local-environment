@@ -10,8 +10,8 @@ services:
     network_mode: "host"
     ports:
       - 27017:27017
-        #volumes:
-        #- cdp-infra-mongodb-data:/data
+    volumes:
+      - cdp-infra-mongodb-data:/data
     restart: always
 
 ################################################################################
@@ -25,6 +25,7 @@ services:
     restart: always
     environment:
       - LOCALSTACK_HOST=127.0.0.1
+      - SERVICES=s3,sqs,sns
     healthcheck:
       test: ["CMD", "curl", "localhost:4566"]
       interval: 5s
@@ -48,7 +49,7 @@ services:
 
 ################################################################################
   cdp-mock-oidc:
-    image: cdp-mock-oidc
+    image: defradigital/cdp-mock-oidc
     container_name: cdp-mock-oidc
     network_mode: "host"
       
@@ -56,7 +57,7 @@ services:
 # Portal Init script
 ################################################################################
   setup-cdp-portal:
-    image: cdp-local-setup:latest
+    image: defradigital/cdp-local-setup:latest
     network_mode: "host"
     env_file:
       - ./config/local-defaults.env
@@ -75,7 +76,7 @@ services:
 
 ################################################################################
   cdp-portal-frontend:
-    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
+    image: defradigital/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
     container_name: cdp-portal-frontend
     network_mode: "host"
     env_file:
@@ -91,7 +92,7 @@ services:
 
 ################################################################################
   cdp-user-service-backend:
-    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-user-service-backend:${CDP_USER_SERVICE_BACKEND:-latest}
+    image: defradigital/cdp-user-service-backend:${CDP_USER_SERVICE_BACKEND:-latest}
     container_name: cdp-user-service-backend
     network_mode: "host"
     ports:
@@ -109,7 +110,7 @@ services:
 
 ################################################################################
   cdp-portal-backend:
-    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-backend:${CDP_PORTAL_BACKEND:-latest}
+    image: defradigital/cdp-portal-backend:${CDP_PORTAL_BACKEND:-latest}
     container_name: cdp-portal-backend
     network_mode: "host"
     env_file:
@@ -127,7 +128,7 @@ services:
 
 ################################################################################
   cdp-self-service-ops:
-    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-self-service-ops:${CDP_SELF_SERVICE_OPS:-latest}
+    image: defradigital/cdp-self-service-ops:${CDP_SELF_SERVICE_OPS:-latest}
     container_name: cdp-self-service-ops
     network_mode: "host"
     env_file:
@@ -143,7 +144,7 @@ services:
 
 ################################################################################
   cdp-portal-stubs:
-    image: 094954420758.dkr.ecr.eu-west-2.amazonaws.com/cdp-portal-stubs:${CDP_PORTAL_STUBS:-latest}
+    image: defradigital/cdp-portal-stubs:${CDP_PORTAL_STUBS:-latest}
     container_name: cdp-portal-stubs
     network_mode: "host"
     env_file:
