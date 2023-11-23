@@ -4,10 +4,9 @@ services:
 ################################################################################
 # All of the infrastructure services
 ################################################################################
-  mongodb:
+  cdp-infra-mongodb:
     image: mongo:6
     container_name: cdp-infra-mongodb
-    network_mode: "host"
     ports:
       - 27017:27017
     volumes:
@@ -15,16 +14,15 @@ services:
     restart: always
 
 ################################################################################
-  localstack:
+  cdp-infra-localstack:
     image: localstack/localstack:3.0
     container_name: cdp-infra-localstack
-    network_mode: "host"
     ports:
       - 4566:4566
       - 4510-4559:4510-4559
     restart: always
     environment:
-      - LOCALSTACK_HOST=127.0.0.1
+      - LOCALSTACK_HOST=cdp-infra-localstack
       - SERVICES=s3,sqs,sns
     healthcheck:
       test: ["CMD", "curl", "localhost:4566"]
@@ -33,9 +31,8 @@ services:
       retries: 3
 
 ################################################################################
-  redis:
+  cdp-infra-redis:
     image: redis:7.0-alpine
-    network_mode: "host"
     container_name: cdp-infra-redis
     ports:
       - 6379:6379
@@ -45,28 +42,31 @@ services:
   selenium-chrome:
     image: selenium/standalone-chrome
     container_name: selenium-chrome
-    network_mode: "host"
+    ports:
+      - 4444:4444
+   
 
 ################################################################################
   cdp-mock-oidc:
     image: defradigital/cdp-mock-oidc
     container_name: cdp-mock-oidc
-    network_mode: "host"
+    ports:
+      - 5557:5557
+    command: ["/app/oidc-server", "start", "-c", "config.yaml","--listen-addr", "cdp-mock-oidc"]
       
 ################################################################################
 # Portal Init script
 ################################################################################
   setup-cdp-portal:
     image: defradigital/cdp-local-setup:latest
-    network_mode: "host"
     env_file:
       - ./config/local-defaults.env
     depends_on:
-      localstack:
+      cdp-infra-localstack:
         condition: service_healthy
-      mongodb:
+      cdp-infra-mongodb:
         condition: service_started
-      redis:
+      cdp-infra-redis:
         condition: service_started
     volumes:
       - ./scripts/portal:/scripts:ro
@@ -78,12 +78,12 @@ services:
   cdp-portal-frontend:
     image: defradigital/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
     container_name: cdp-portal-frontend
-    network_mode: "host"
+    
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-frontend.env
-    environment:
-      - PORT=3000
+    ports:
+      - 3000:80
     depends_on:
       setup-cdp-portal:
         condition: service_completed_successfully
@@ -94,14 +94,11 @@ services:
   cdp-user-service-backend:
     image: defradigital/cdp-user-service-backend:${CDP_USER_SERVICE_BACKEND:-latest}
     container_name: cdp-user-service-backend
-    network_mode: "host"
     ports:
-      - 3002:3002
+      - 3002:80
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-user-service-backend.env
-    environment:
-      - PORT=3001
     depends_on:
       setup-cdp-portal:
         condition: service_completed_successfully
@@ -112,12 +109,11 @@ services:
   cdp-portal-backend:
     image: defradigital/cdp-portal-backend:${CDP_PORTAL_BACKEND:-latest}
     container_name: cdp-portal-backend
-    network_mode: "host"
+    ports:
+      - 5094:80
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-backend.env
-    environment:
-      - ASPNETCORE_URLS=http://+:5094
     depends_on:
       setup-cdp-portal:
         condition: service_completed_successfully
@@ -130,15 +126,14 @@ services:
   cdp-self-service-ops:
     image: defradigital/cdp-self-service-ops:${CDP_SELF_SERVICE_OPS:-latest}
     container_name: cdp-self-service-ops
-    network_mode: "host"
+    ports:
+      - 3009:80    
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-self-service-ops.env
     depends_on:
       setup-cdp-portal:
         condition: service_completed_successfully
-    environment:
-      - PORT=3009
     profiles:
       - portal
 
@@ -146,12 +141,11 @@ services:
   cdp-portal-stubs:
     image: defradigital/cdp-portal-stubs:${CDP_PORTAL_STUBS:-latest}
     container_name: cdp-portal-stubs
-    network_mode: "host"
+    ports:
+      - 3939:80    
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-stubs.env
-    environment:
-      - PORT=3939
     profiles:
       - portal
 
