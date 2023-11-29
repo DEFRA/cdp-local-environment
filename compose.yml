@@ -46,12 +46,6 @@ services:
     image: selenium/standalone-chrome
     container_name: selenium-chrome
     network_mode: "host"
-
-################################################################################
-  cdp-mock-oidc:
-    image: defradigital/cdp-mock-oidc
-    container_name: cdp-mock-oidc
-    network_mode: "host"
       
 ################################################################################
 # Portal Init script
@@ -85,8 +79,8 @@ services:
     environment:
       - PORT=3000
     depends_on:
-      setup-cdp-portal:
-        condition: service_completed_successfully
+      cdp-portal-stubs:
+        condition: service_started
     profiles:
       - portal
 
@@ -103,8 +97,8 @@ services:
     environment:
       - PORT=3001
     depends_on:
-      setup-cdp-portal:
-        condition: service_completed_successfully
+      cdp-portal-stubs:
+        condition: service_started
     profiles:
       - portal
 
@@ -135,8 +129,8 @@ services:
       - ./config/local-defaults.env
       - ./config/cdp-self-service-ops.env
     depends_on:
-      setup-cdp-portal:
-        condition: service_completed_successfully
+      cdp-portal-stubs:
+        condition: service_started
     environment:
       - PORT=3009
     profiles:
@@ -152,6 +146,9 @@ services:
       - ./config/cdp-portal-stubs.env
     environment:
       - PORT=3939
+    depends_on:
+      setup-cdp-portal:
+        condition: service_completed_successfully
     profiles:
       - portal
 
