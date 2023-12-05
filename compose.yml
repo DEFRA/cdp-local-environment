@@ -65,8 +65,6 @@ services:
     volumes:
       - ./scripts/portal:/scripts:ro
     restart: "no"
-    profiles:
-      - portal
 
 ################################################################################
   cdp-portal-frontend:
@@ -79,8 +77,17 @@ services:
     environment:
       - PORT=3000
     depends_on:
-      cdp-portal-stubs:
+      cdp-portal-backend:
         condition: service_started
+      cdp-user-service-backend:
+        condition: service_healthy
+      cdp-portal-stubs:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
+      interval: 3s
+      start_period: 2s
+      retries: 3
     profiles:
       - portal
 
@@ -98,7 +105,12 @@ services:
       - PORT=3001
     depends_on:
       cdp-portal-stubs:
-        condition: service_started
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
+      interval: 3s
+      start_period: 2s
+
     profiles:
       - portal
 
@@ -116,7 +128,7 @@ services:
       setup-cdp-portal:
         condition: service_completed_successfully
       cdp-user-service-backend:
-        condition: service_started
+        condition: service_healthy
     profiles:
       - portal
 
@@ -130,9 +142,13 @@ services:
       - ./config/cdp-self-service-ops.env
     depends_on:
       cdp-portal-stubs:
-        condition: service_started
+        condition: service_healthy
     environment:
       - PORT=3009
+    healthcheck:
+      test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
+      interval: 3s
+      start_period: 2s
     profiles:
       - portal
 
@@ -149,6 +165,10 @@ services:
     depends_on:
       setup-cdp-portal:
         condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
+      interval: 3s
+      start_period: 2s
     profiles:
       - portal
 
