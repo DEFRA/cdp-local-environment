@@ -16,7 +16,7 @@ services:
 
 ################################################################################
   localstack:
-    image: localstack/localstack:3.0
+    image: localstack/localstack:3.0.2
     container_name: cdp-infra-localstack
     network_mode: "host"
     ports:
@@ -34,7 +34,7 @@ services:
 
 ################################################################################
   redis:
-    image: redis:7.0-alpine
+    image: redis:7.2.3-alpine3.18
     network_mode: "host"
     container_name: cdp-infra-redis
     ports:
@@ -43,7 +43,7 @@ services:
 
 ################################################################################
   selenium-chrome:
-    image: selenium/standalone-chrome
+    image: selenium/standalone-chrome:119.0
     container_name: selenium-chrome
     network_mode: "host"
       
