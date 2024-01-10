@@ -173,6 +173,17 @@ services:
       - portal
 
 ################################################################################
+  registry:
+    image: registry:2
+    container_name: cdp-infra-registry
+    network_mode: "host"
+    ports:
+      - 5000:5000
+    volumes:
+      - cdp-infra-registry-data:/var/lib/registry
+    restart: always
+################################################################################
 
 volumes:
   cdp-infra-mongodb-data:
+  cdp-infra-registry-data:
