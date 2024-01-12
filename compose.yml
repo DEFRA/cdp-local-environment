@@ -7,7 +7,8 @@ services:
   mongodb:
     image: mongo:6
     container_name: cdp-infra-mongodb
-    network_mode: "host"
+    networks:
+      - cdpnet
     ports:
       - 27017:27017
     volumes:
@@ -18,7 +19,8 @@ services:
   localstack:
     image: localstack/localstack:3.0.2
     container_name: cdp-infra-localstack
-    network_mode: "host"
+    networks:
+      - cdpnet
     ports:
       - 4566:4566
       - 4510-4559:4510-4559
@@ -35,7 +37,8 @@ services:
 ################################################################################
   redis:
     image: redis:7.2.3-alpine3.18
-    network_mode: "host"
+    networks:
+      - cdpnet
     container_name: cdp-infra-redis
     ports:
       - 6379:6379
@@ -45,14 +48,16 @@ services:
   selenium-chrome:
     image: selenium/standalone-chrome:119.0
     container_name: selenium-chrome
-    network_mode: "host"
-      
+    networks:
+      - cdpnet
+
 ################################################################################
 # Portal Init script
 ################################################################################
   setup-cdp-portal:
     image: defradigital/cdp-local-setup:latest
-    network_mode: "host"
+    networks:
+      - cdpnet
     env_file:
       - ./config/local-defaults.env
     depends_on:
@@ -70,11 +75,15 @@ services:
   cdp-portal-frontend:
     image: defradigital/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
     container_name: cdp-portal-frontend
-    network_mode: "host"
+    networks:
+      - cdpnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-frontend.env
     environment:
+      - VIRTUAL_HOST=~^cdp\..*\.sslip\.io
       - PORT=3000
     depends_on:
       cdp-portal-backend:
@@ -95,7 +104,8 @@ services:
   cdp-user-service-backend:
     image: defradigital/cdp-user-service-backend:${CDP_USER_SERVICE_BACKEND:-latest}
     container_name: cdp-user-service-backend
-    network_mode: "host"
+    networks:
+      - cdpnet
     ports:
       - 3002:3002
     env_file:
@@ -118,7 +128,8 @@ services:
   cdp-portal-backend:
     image: defradigital/cdp-portal-backend:${CDP_PORTAL_BACKEND:-latest}
     container_name: cdp-portal-backend
-    network_mode: "host"
+    networks:
+      - cdpnet
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-backend.env
@@ -136,7 +147,10 @@ services:
   cdp-self-service-ops:
     image: defradigital/cdp-self-service-ops:${CDP_SELF_SERVICE_OPS:-latest}
     container_name: cdp-self-service-ops
-    network_mode: "host"
+    networks:
+      - cdpnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-self-service-ops.env
@@ -156,10 +170,13 @@ services:
   cdp-portal-stubs:
     image: defradigital/cdp-portal-stubs:${CDP_PORTAL_STUBS:-latest}
     container_name: cdp-portal-stubs
-    network_mode: "host"
+    networks:
+      - cdpnet
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-stubs.env
+    ports:
+      - 3939:3939
     environment:
       - PORT=3939
     depends_on:
@@ -176,3 +193,7 @@ services:
 
 volumes:
   cdp-infra-mongodb-data:
+
+networks:
+  cdpnet:
+    driver: bridge
