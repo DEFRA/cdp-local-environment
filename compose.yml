@@ -130,6 +130,8 @@ services:
     container_name: cdp-portal-backend
     networks:
       - cdpnet
+    ports:
+      - 5094:5094
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-backend.env
