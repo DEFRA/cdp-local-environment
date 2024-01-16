@@ -133,7 +133,7 @@ services:
       - ./config/local-defaults.env
       - ./config/cdp-user-service-backend.env
     environment:
-      - PORT=3001
+      - PORT=3002
     depends_on:
       cdp-portal-stubs:
         condition: service_healthy
