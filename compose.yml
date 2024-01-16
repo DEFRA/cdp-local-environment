@@ -96,6 +96,7 @@ services:
       - 3000:3000
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-frontend.env
