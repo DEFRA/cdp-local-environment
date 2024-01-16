@@ -4,6 +4,21 @@ services:
 ################################################################################
 # All of the infrastructure services
 ################################################################################
+  proxy:
+    image: nginxproxy/nginx-proxy:1.4
+    container_name: cdp-proxy
+    ports:
+      - "80:80"
+    environment:
+      - ENABLE_IPV6=true
+      - DEFAULT_ROOT="418"
+      - DEFAULT_HOST=~^cdp\..*\.sslip\.io
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./config/cdp-proxy.conf:/etc/nginx/conf.d/cdp-proxy.conf:ro
+    network_mode: "host"
+
+################################################################################
   mongodb:
     image: mongo:6
     container_name: cdp-infra-mongodb
@@ -86,6 +101,8 @@ services:
       - ./config/cdp-portal-frontend.env
     environment:
       - VIRTUAL_HOST=~^cdp\..*\.sslip\.io
+      - VIRTUAL_PATH=/
+      - VIRTUAL_PORT=3000
       - PORT=3000
     depends_on:
       cdp-portal-backend:
