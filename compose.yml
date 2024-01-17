@@ -16,7 +16,8 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./config/cdp-proxy.conf:/etc/nginx/conf.d/cdp-proxy.conf:ro
-    network_mode: "host"
+    networks:
+      - cdpnet
 
 ################################################################################
   mongodb:
@@ -96,7 +97,7 @@ services:
       - 3000:3000
     extra_hosts:
       - "host.docker.internal:host-gateway"
-      - "cdp.--1.sslip.io:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-frontend.env
@@ -105,6 +106,7 @@ services:
       - VIRTUAL_PATH=/
       - VIRTUAL_PORT=3000
       - PORT=3000
+      - NODE_ENV=development
     depends_on:
       cdp-portal-backend:
         condition: service_started
@@ -128,6 +130,7 @@ services:
       - cdpnet
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
     ports:
       - 3002:3002
     env_file:
@@ -152,6 +155,9 @@ services:
     container_name: cdp-portal-backend
     networks:
       - cdpnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
     ports:
       - 5094:5094
     env_file:
@@ -177,6 +183,7 @@ services:
       - 3009:3009
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-self-service-ops.env
@@ -200,6 +207,7 @@ services:
       - cdpnet
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-stubs.env
