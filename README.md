@@ -50,7 +50,11 @@ First, add the service definition to the compose.yml:
   service-name:
     image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/image-name:${SERVICE_NAME:-latest}
     container_name: service-name
-    network_mode: "host"
+    networks:
+      - cdpnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/service-name.env
@@ -108,4 +112,75 @@ Next create a new folder in `./scripts/{SERVICE_NAME}` and place the init script
 
 For some examples, see `./scripts/portal`.
 
+## Mixing with local running services
 
+I.e mixing with non docker compose services, e.g. from your IDE.
+
+* Stop the compose service
+
+  `docker compose stop cdp-portal-backend`
+
+  This will free up the port
+
+* Launch the local service from terminal or IDE
+
+And everything __should__ work (if envvars are correct)
+
+## Custom URL
+
+By default you can access the portal through the frontend on
+
+   http://cdp.127.0.0.1.sslip.io:3333
+
+This uses __sslip.io__ to resolve to the local IP on your machine.
+
+You can however go direct to services, e.g. `cdp-portal-frontend` at http://localhost:3000
+
+Note you may need to update some envars to keep OICD login happy etc.
+
+### Changing custom URL
+
+E.g. if you want to use port 80:
+
+* Change `/config/cdp-portal-frontend.env`
+
+   ```
+   APP_BASE_URL=http://cdp.127.0.0.1.sslip.io
+   ```
+
+* Open your browser with [http://cdp.127.0.0.1.sslip.io](http://cdp.127.0.0.1.sslip.io)
+
+Or if you want to use use IPv6 (and port 80):
+
+* Change `/config/cdp-portal-frontend.env`
+
+   ```
+   APP_BASE_URL=http://cdp.--1.sslip.io
+   ```
+
+* Change `/config/local_defaults.env`
+
+   ```
+   OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.--1.sslip.io:3939/......
+
+   AzureAd__Instance=http://cdp.--1.sslip.io:3939/
+   ```
+
+   Note to keep the __3939__ port in the URL as it will tunnel through to the stubs.
+
+* Change `/compose.yml`
+
+    Add a new `extra__hosts` to the services that already have that:
+
+    ```
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
+    ```
+
+    Note we already added two __cdp....` hosts but you can add more.
+
+
+
+* Open your browser with [http://cdp.--1.sslip.io](http://cdp.--1.sslip.io)
