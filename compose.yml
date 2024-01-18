@@ -98,6 +98,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
       - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-frontend.env
@@ -131,6 +132,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
       - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
     ports:
       - 3001:3001
     env_file:
@@ -158,6 +160,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
       - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
     ports:
       - 5094:5094
     env_file:
@@ -184,6 +187,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
       - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-self-service-ops.env
@@ -208,6 +212,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
       - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
     env_file:
       - ./config/local-defaults.env
       - ./config/cdp-portal-stubs.env
