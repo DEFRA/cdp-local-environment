@@ -66,6 +66,12 @@ services:
     container_name: selenium-chrome
     networks:
       - cdpnet
+    ports:
+      - 4444:4444
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
 
 ################################################################################
 # Portal Init script
