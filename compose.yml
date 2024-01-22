@@ -21,7 +21,7 @@ services:
 
 ################################################################################
   mongodb:
-    image: mongo:6
+    image: mongo:6.0.13
     container_name: cdp-infra-mongodb
     networks:
       - cdpnet
