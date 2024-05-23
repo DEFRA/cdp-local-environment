@@ -33,7 +33,7 @@ services:
 
 ################################################################################
   localstack:
-    image: localstack/localstack:3.0.2
+    image: localstack/localstack:3.2.0
     container_name: cdp-infra-localstack
     networks:
       - cdpnet
@@ -72,6 +72,17 @@ services:
       - "host.docker.internal:host-gateway"
       - "cdp.127.0.0.1.sslip.io:host-gateway"
       - "cdp.--1.sslip.io:host-gateway"
+
+  ################################################################################
+  squid:
+    image: ubuntu/squid:5.7-23.04_beta
+    container_name: squid
+    networks:
+      - cdpnet
+    ports:
+      - 3128:3128
+    volumes:
+      - ./config/squid.conf:/etc/squid/squid.conf:ro
 
 ################################################################################
 # Portal Init script

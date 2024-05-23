@@ -184,3 +184,33 @@ Or if you want to use use IPv6 (and port 80):
 
 
 * Open your browser with [http://cdp.--1.sslip.io](http://cdp.--1.sslip.io)
+
+## Squid proxy
+
+To use a local squid proxy for outgoing http traffic:
+
+* Start the proxy
+
+  ```
+  docker compose up -d squid
+  ```
+
+* To test, configure a browser to use the proxy, e.g. with `curl`
+
+  ```
+  curl -x http://localhost:3128 httpstat.us/200
+  ```
+
+* To use in local CDP services in this setup,
+  uncomment this line in `config/local-defaults.conf`
+
+  ```
+  CDP_HTTP_PROXY=http://squid:3128
+  ```
+
+* To use in other CDP services, e.g. from your shell or IDE
+  set the this env-var:
+
+  ```
+  export CDP_HTTP_PROXY=http://localhost:3128
+  ```
