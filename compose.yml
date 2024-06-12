@@ -43,7 +43,7 @@ services:
     restart: always
     environment:
       - LOCALSTACK_HOST=127.0.0.1
-      - SERVICES=s3,sqs,sns
+      - SERVICES=s3,sqs,sns,firehose
     healthcheck:
       test: ["CMD", "curl", "localhost:4566"]
       interval: 5s
