@@ -19,6 +19,9 @@ aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name run-test-from-porta
 aws --endpoint $LOCALSTACK_URL sns create-topic --name run-test-topic
 aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:run-test-topic --protocol sqs --notification-endpoint  arn:aws:sqs:eu-west-2:000000000000:run-test-from-portal
 
+# secret manager results
+aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name secret_management_updates
+
 echo Done!
 aws --endpoint $LOCALSTACK_URL sqs list-queues
 aws --endpoint $LOCALSTACK_URL sns list-topics
