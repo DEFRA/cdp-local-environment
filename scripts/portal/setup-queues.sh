@@ -11,6 +11,20 @@ aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION
 echo Setting up Uploader
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name cdp-clamav-results
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name cdp-uploader-scan-results-callback.fifo --attributes "{\"FifoQueue\":\"true\",\"ContentBasedDeduplication\": \"true\"}"
+aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name mock-clamav
+
+aws --endpoint-url=$LOCALSTACK_URL s3api put-bucket-notification-configuration\
+    --bucket cdp-uploader-quarantine \
+    --notification-configuration '{
+                                      "QueueConfigurations": [
+                                         {
+                                           "QueueArn": "arn:aws:sqs:eu-west-2:000000000000:mock-clamav",
+                                           "Events": ["s3:ObjectCreated:*"]
+                                         }
+                                       ]
+	                                }'
+
+aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://my-bucket
 aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-uploader-quarantine
 aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-example-node-frontend
 
@@ -25,4 +39,3 @@ aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name secret_management_u
 echo Done!
 aws --endpoint $LOCALSTACK_URL sqs list-queues
 aws --endpoint $LOCALSTACK_URL sns list-topics
-
