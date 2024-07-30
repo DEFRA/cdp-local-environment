@@ -8,6 +8,11 @@ aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name deployments-from-po
 aws --endpoint $LOCALSTACK_URL sns create-topic --name deploy-topic
 aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:deploy-topic --protocol sqs --notification-endpoint  arn:aws:sqs:eu-west-2:000000000000:deployments-from-portal
 
+# secret manager create secrets
+aws --endpoint $LOCALSTACK_URL sns create-topic --name secret_management
+# secret manager results
+aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name secret_management_updates
+
 echo Setting up Uploader
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name cdp-clamav-results
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name cdp-uploader-scan-results-callback.fifo --attributes "{\"FifoQueue\":\"true\",\"ContentBasedDeduplication\": \"true\"}"
@@ -32,9 +37,6 @@ aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-example-node-frontend
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name run-test-from-portal
 aws --endpoint $LOCALSTACK_URL sns create-topic --name run-test-topic
 aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:run-test-topic --protocol sqs --notification-endpoint  arn:aws:sqs:eu-west-2:000000000000:run-test-from-portal
-
-# secret manager results
-aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name secret_management_updates
 
 echo Done!
 aws --endpoint $LOCALSTACK_URL sqs list-queues
