@@ -15,8 +15,12 @@ aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name secret_management_u
 
 echo Setting up Uploader
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name cdp-clamav-results
-aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name cdp-uploader-scan-results-callback.fifo --attributes "{\"FifoQueue\":\"true\",\"ContentBasedDeduplication\": \"true\"}"
+aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name cdp-uploader-scan-results-callback.fifo --attributes "{\"FifoQueue\":\"true\"}"
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name mock-clamav
+
+aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://my-bucket
+aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-uploader-quarantine
+aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-example-node-frontend
 
 aws --endpoint-url=$LOCALSTACK_URL s3api put-bucket-notification-configuration\
     --bucket cdp-uploader-quarantine \
@@ -29,9 +33,6 @@ aws --endpoint-url=$LOCALSTACK_URL s3api put-bucket-notification-configuration\
                                        ]
 	                                }'
 
-aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://my-bucket
-aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-uploader-quarantine
-aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-example-node-frontend
 
 # stub test suite runs
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name run-test-from-portal
