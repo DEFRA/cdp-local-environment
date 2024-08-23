@@ -124,7 +124,7 @@ services:
       - VIRTUAL_PATH=/
       - VIRTUAL_PORT=3000
       - PORT=3000
-      - NODE_ENV=development
+      - NODE_ENV=development # This is required to ensure the login cookie is set as insecure, as we test over http
     depends_on:
       cdp-portal-backend:
         condition: service_started
