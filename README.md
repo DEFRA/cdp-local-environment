@@ -266,7 +266,7 @@ docker compose stop cdp-portal-frontend
 > the [config/cdp-portal-frontend.env](config/cdp-portal-frontend.env).
 
 ```bash
-APP_BASE_URL=http://localhost:3000 USE_SINGLE_INSTANCE_CACHE=true PORTAL_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:5094 SELF_SERVICE_OPS_URL=http://cdp.127.0.0.1.sslip.io:3009 USER_SERVICE_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:3001 AZURE_CLIENT_SECRET=test_value OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration AZURE_TENANT_ID=63983fc2-cfff-45bb-8ec2-959e21062b9a OIDC_AUDIENCE=63983fc2-cfff-45bb-8ec2-959e21062b9a npm run dev:debug
+NODE_ENV=development APP_BASE_URL=http://localhost:3000 USE_SINGLE_INSTANCE_CACHE=true PORTAL_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:5094 SELF_SERVICE_OPS_URL=http://cdp.127.0.0.1.sslip.io:3009 USER_SERVICE_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:3001 AZURE_CLIENT_SECRET=test_value OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration AZURE_TENANT_ID=63983fc2-cfff-45bb-8ec2-959e21062b9a OIDC_AUDIENCE=63983fc2-cfff-45bb-8ec2-959e21062b9a npm run dev:debug
 ````
 
 1. Open your browser with [http://localhost:3000](http://localhost:3000)
