@@ -6,16 +6,19 @@ aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name github-events
 
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name deployments-from-portal
 aws --endpoint $LOCALSTACK_URL sns create-topic --name deploy-topic
-aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:deploy-topic --protocol sqs --notification-endpoint  arn:aws:sqs:eu-west-2:000000000000:deployments-from-portal
+aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:deploy-topic --protocol sqs --notification-endpoint  arn:aws:sqs:$AWS_REGION:000000000000:deployments-from-portal
 
 aws --endpoint $LOCALSTACK_URL sns create-topic --name cdp-notification
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name cdp-notification
-aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:cdp-notification --protocol sqs --notification-endpoint  arn:aws:sqs:eu-west-2:000000000000:cdp-notification
+aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:cdp-notification --protocol sqs --notification-endpoint  arn:aws:sqs:$AWS_REGION:000000000000:cdp-notification
 
 # secret manager create secrets
 aws --endpoint $LOCALSTACK_URL sns create-topic --name secret_management
 # secret manager results
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name secret_management_updates
+aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name secret_management_updates_lambda
+aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:secret_management --protocol sqs --notification-endpoint  arn:aws:sqs:$AWS_REGION:000000000000:secret_management_updates
+aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:secret_management --protocol sqs --notification-endpoint  arn:aws:sqs:$AWS_REGION:000000000000:secret_management_updates_lambda
 
 echo Setting up Uploader
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name cdp-clamav-results
@@ -41,7 +44,7 @@ aws --endpoint-url=$LOCALSTACK_URL s3api put-bucket-notification-configuration\
 # stub test suite runs
 aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name run-test-from-portal
 aws --endpoint $LOCALSTACK_URL sns create-topic --name run-test-topic
-aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:run-test-topic --protocol sqs --notification-endpoint  arn:aws:sqs:eu-west-2:000000000000:run-test-from-portal
+aws --endpoint $LOCALSTACK_URL sns subscribe --topic-arn arn:aws:sns:$AWS_REGION:000000000000:run-test-topic --protocol sqs --notification-endpoint  arn:aws:sqs:$AWS_REGION:000000000000:run-test-from-portal
 
 echo Done!
 aws --endpoint $LOCALSTACK_URL sqs list-queues
