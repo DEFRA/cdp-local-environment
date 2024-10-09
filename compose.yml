@@ -102,7 +102,23 @@ services:
       - ./scripts/portal:/scripts:ro
     restart: "no"
 
-################################################################################
+  ################################################################################
+  setup-cdp-portal-backend:
+    image: defradigital/cdp-local-setup:latest
+    networks:
+      - cdpnet
+    env_file:
+      - ./config/local-defaults.env
+    depends_on:
+      localstack:
+        condition: service_healthy
+      cdp-portal-backend:
+        condition: service_started
+    volumes:
+      - ./scripts/portal-backend:/scripts:ro
+    restart: "no"
+
+  ################################################################################
   cdp-portal-frontend:
     image: defradigital/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
     container_name: cdp-portal-frontend
@@ -126,6 +142,8 @@ services:
     depends_on:
       cdp-portal-backend:
         condition: service_started
+      setup-cdp-portal-backend:
+        condition: service_completed_successfully
       cdp-user-service-backend:
         condition: service_healthy
       cdp-portal-stubs:
