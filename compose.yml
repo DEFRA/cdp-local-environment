@@ -117,6 +117,8 @@ services:
     volumes:
       - ./scripts/portal-backend:/scripts:ro
     restart: "no"
+    profiles:
+      - portal
 
   ################################################################################
   cdp-portal-frontend:
