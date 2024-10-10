@@ -25,6 +25,7 @@ aws --endpoint $LOCALSTACK_URL sqs create-queue --queue-name mock-clamav
 aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://my-bucket
 aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-uploader-quarantine
 aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-example-node-frontend
+aws --endpoint-url=$LOCALSTACK_URL s3 mb s3://cdp-documentation
 
 aws --endpoint-url=$LOCALSTACK_URL s3api put-bucket-notification-configuration\
     --bucket cdp-uploader-quarantine \
