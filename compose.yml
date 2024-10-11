@@ -42,6 +42,12 @@ services:
     environment:
       - LOCALSTACK_HOST=127.0.0.1
       - SERVICES=s3,sqs,sns,firehose
+      - LS_LOG=WARN
+    env_file:
+      - ./config/local-defaults.env
+    volumes:
+      - ./config/local-defaults.env:/etc/localstack/conf.d/local-defaults.env:ro
+      - ./scripts/localstack:/etc/localstack/init/ready.d
     healthcheck:
       test: ["CMD", "curl", "localhost:4566"]
       interval: 5s
