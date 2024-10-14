@@ -1,5 +1,3 @@
-version: "3.4"
-
 services:
 ################################################################################
 # All of the infrastructure services
@@ -44,6 +42,12 @@ services:
     environment:
       - LOCALSTACK_HOST=127.0.0.1
       - SERVICES=s3,sqs,sns,firehose
+      - LS_LOG=WARN
+    env_file:
+      - ./config/local-defaults.env
+    volumes:
+      - ./config/local-defaults.env:/etc/localstack/conf.d/local-defaults.env:ro
+      - ./scripts/localstack:/etc/localstack/init/ready.d
     healthcheck:
       test: ["CMD", "curl", "localhost:4566"]
       interval: 5s
@@ -104,7 +108,25 @@ services:
       - ./scripts/portal:/scripts:ro
     restart: "no"
 
-################################################################################
+  ################################################################################
+  setup-cdp-portal-backend:
+    image: defradigital/cdp-local-setup:latest
+    networks:
+      - cdpnet
+    env_file:
+      - ./config/local-defaults.env
+    depends_on:
+      localstack:
+        condition: service_healthy
+      cdp-portal-backend:
+        condition: service_started
+    volumes:
+      - ./scripts/portal-backend:/scripts:ro
+    restart: "no"
+    profiles:
+      - portal
+
+  ################################################################################
   cdp-portal-frontend:
     image: defradigital/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
     container_name: cdp-portal-frontend
@@ -128,6 +150,8 @@ services:
     depends_on:
       cdp-portal-backend:
         condition: service_started
+      setup-cdp-portal-backend:
+        condition: service_completed_successfully
       cdp-user-service-backend:
         condition: service_healthy
       cdp-portal-stubs:
