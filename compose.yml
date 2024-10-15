@@ -164,6 +164,27 @@ services:
     profiles:
       - portal
 
+  cdp-portal-frontend-proxy:
+    image: nginxproxy/nginx-proxy:1.4
+    container_name: cdp-portal-frontend-proxy
+    networks:
+      - cdpnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
+    environment:
+      - VIRTUAL_HOST=~^cdp\..*\.sslip\.io
+      - VIRTUAL_PATH=/
+      - VIRTUAL_PORT=3000
+      - PORT=3000
+      - NODE_ENV=development # This is required to ensure the login cookie is set as insecure, as we test over http
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./config/cdp-portal-frontend-proxy.conf:/etc/nginx/conf.d/cdp-portal-frontend-proxy.conf:ro
+    profiles:
+      - proxies
+      
 ################################################################################
   cdp-user-service-backend:
     image: defradigital/cdp-user-service-backend:${CDP_USER_SERVICE_BACKEND:-latest}
@@ -188,7 +209,6 @@ services:
       test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
       interval: 3s
       start_period: 2s
-
     profiles:
       - portal
 
