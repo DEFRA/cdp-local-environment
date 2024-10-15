@@ -233,6 +233,8 @@ services:
       - ./config/local-defaults.env
       - ./config/cdp-self-service-ops.env
     depends_on:
+      setup-cdp-portal:
+        condition: service_completed_successfully
       cdp-portal-stubs:
         condition: service_healthy
     environment:
