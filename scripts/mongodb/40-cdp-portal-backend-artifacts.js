@@ -7,9 +7,7 @@ db.artifacts.updateOne(
   },
   {
     $setOnInsert: {
-      created: {
-        $date: "2023-11-02T16:24:06.004Z",
-      },
+      created: "2023-11-02T16:24:06.004Z",
       repo: "cdp-self-service-ops",
       tag: "0.100.0",
       sha256:
@@ -41,9 +39,7 @@ db.artifacts.updateOne(
   },
   {
     $setOnInsert: {
-      created: {
-        $date: "2023-11-03T13:16:58.099Z",
-      },
+      created: "2023-11-03T13:16:58.099Z",
       repo: "cdp-self-service-ops",
       tag: "0.101.0",
       sha256:
@@ -75,9 +71,7 @@ db.artifacts.updateOne(
   },
   {
     $setOnInsert: {
-      created: {
-        $date: "2023-11-03T16:12:39.603Z",
-      },
+      created: "2023-11-03T16:12:39.603Z",
       repo: "cdp-self-service-ops",
       tag: "0.102.0",
       sha256:
@@ -109,9 +103,7 @@ db.artifacts.updateOne(
   },
   {
     $setOnInsert: {
-      created: {
-        $date: "2023-11-01T10:43:15.125Z",
-      },
+      created: "2023-11-01T10:43:15.125Z",
       repo: "cdp-portal-frontend",
       tag: "0.170.0",
       sha256:
@@ -143,9 +135,7 @@ db.artifacts.updateOne(
   },
   {
     $setOnInsert: {
-      created: {
-        $date: "2023-11-01T12:27:57.452Z",
-      },
+      created: "2023-11-01T12:27:57.452Z",
       repo: "cdp-portal-frontend",
       tag: "0.171.0",
       sha256:
@@ -177,9 +167,7 @@ db.artifacts.updateOne(
   },
   {
     $setOnInsert: {
-      created: {
-        $date: "2023-11-01T12:59:56.102Z",
-      },
+      created: "2023-11-01T12:59:56.102Z",
       repo: "cdp-portal-frontend",
       tag: "0.172.0",
       sha256:

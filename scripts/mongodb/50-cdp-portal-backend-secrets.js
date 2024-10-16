@@ -1,7 +1,5 @@
 db = db.getSiblingDB("cdp-portal-backend");
 
-// db.createCollection("tenantsecrets");
-
 db.tenantsecrets.updateOne(
   {
     environment: "infra-dev",

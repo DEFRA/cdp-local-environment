@@ -25,10 +25,6 @@ services:
       - cdpnet
     ports:
       - 27017:27017
-    # environment:
-    # - MONGO_INITDB_DATABASE=cdp-portal-backend
-    # - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-    # - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
       - cdp-infra-mongodb-data:/data
       - ./scripts/mongodb:/docker-entrypoint-initdb.d
@@ -114,22 +110,22 @@ services:
     restart: "no"
 
   ################################################################################
-  setup-cdp-portal-backend:
-    image: defradigital/cdp-local-setup:latest
-    networks:
-      - cdpnet
-    env_file:
-      - ./config/local-defaults.env
-    depends_on:
-      localstack:
-        condition: service_healthy
-      cdp-portal-backend:
-        condition: service_started
-    volumes:
-      - ./scripts/portal-backend:/scripts:ro
-    restart: "no"
-    profiles:
-      - portal
+  # setup-cdp-portal-backend:
+  #   image: defradigital/cdp-local-setup:latest
+  #   networks:
+  #     - cdpnet
+  #   env_file:
+  #     - ./config/local-defaults.env
+  #   depends_on:
+  #     localstack:
+  #       condition: service_healthy
+  #     cdp-portal-backend:
+  #       condition: service_started
+  #   volumes:
+  #     - ./scripts/portal-backend:/scripts:ro
+  #   restart: "no"
+  #   profiles:
+  #     - portal
 
   ################################################################################
   cdp-portal-frontend:
