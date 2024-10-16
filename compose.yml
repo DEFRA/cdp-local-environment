@@ -90,44 +90,6 @@ services:
       - ./config/squid.conf:/etc/squid/squid.conf:ro
 
 ################################################################################
-# Portal Init script
-################################################################################
-  setup-cdp-portal:
-    image: defradigital/cdp-local-setup:latest
-    networks:
-      - cdpnet
-    env_file:
-      - ./config/local-defaults.env
-    depends_on:
-      localstack:
-        condition: service_healthy
-      mongodb:
-        condition: service_started
-      redis:
-        condition: service_started
-    volumes:
-      - ./scripts/portal:/scripts:ro
-    restart: "no"
-
-  ################################################################################
-  # setup-cdp-portal-backend:
-  #   image: defradigital/cdp-local-setup:latest
-  #   networks:
-  #     - cdpnet
-  #   env_file:
-  #     - ./config/local-defaults.env
-  #   depends_on:
-  #     localstack:
-  #       condition: service_healthy
-  #     cdp-portal-backend:
-  #       condition: service_started
-  #   volumes:
-  #     - ./scripts/portal-backend:/scripts:ro
-  #   restart: "no"
-  #   profiles:
-  #     - portal
-
-  ################################################################################
   cdp-portal-frontend:
     image: defradigital/cdp-portal-frontend:${CDP_PORTAL_FRONTEND:-latest}
     container_name: cdp-portal-frontend
@@ -151,9 +113,9 @@ services:
     depends_on:
       cdp-portal-backend:
         condition: service_started
-      setup-cdp-portal-backend:
-        condition: service_completed_successfully
       cdp-user-service-backend:
+        condition: service_healthy
+      cdp-self-service-ops:
         condition: service_healthy
       cdp-portal-stubs:
         condition: service_healthy
@@ -231,8 +193,6 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:5094
     depends_on:
-      setup-cdp-portal:
-        condition: service_completed_successfully
       cdp-user-service-backend:
         condition: service_healthy
     profiles:
@@ -254,8 +214,6 @@ services:
       - ./config/local-defaults.env
       - ./config/cdp-self-service-ops.env
     depends_on:
-      setup-cdp-portal:
-        condition: service_completed_successfully
       cdp-portal-stubs:
         condition: service_healthy
     environment:
@@ -285,8 +243,12 @@ services:
     environment:
       - PORT=3939
     depends_on:
-      setup-cdp-portal:
-        condition: service_completed_successfully
+      localstack:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      redis:
+        condition: service_started
     healthcheck:
       test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
       interval: 3s
