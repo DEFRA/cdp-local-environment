@@ -2,42 +2,70 @@ db = db.getSiblingDB("cdp-portal-backend");
 
 // db.createCollection("tenantsecrets");
 
-db.tenantsecrets.insertMany([
+db.tenantsecrets.updateOne(
   {
-    _id: BSON.ObjectId("670e925aed103e51a180954b"),
+    environment: "infra-dev",
+    service: "cdp-portal-frontend",
+    keys: ["SOME_KEY"],
+  },
+  {
+    $setOnInsert: {
+      environment: "infra-dev",
+      service: "cdp-portal-frontend",
+      keys: ["SOME_KEY"],
+      lastChangedDate: "2024-10-15T16:03:38.3139986Z",
+    },
+  },
+  { upsert: true }
+);
+
+db.tenantsecrets.updateOne(
+  {
     environment: "management",
     service: "cdp-portal-frontend",
     keys: ["SOME_KEY"],
-    lastChangedDate: "2024-10-15T16:03:38.3139986Z",
   },
-]);
+  {
+    $setOnInsert: {
+      environment: "management",
+      service: "cdp-portal-frontend",
+      keys: ["SOME_KEY"],
+      lastChangedDate: "2024-10-15T16:03:38.3139986Z",
+    },
+  },
+  { upsert: true }
+);
 
-// db.tenantsecrets.insertMany([
-//   {
-//     _id: {
-//       $oid: "670e925aed103e51a180954b",
-//     },
-//     environment: "management",
-//     service: "cdp-portal-frontend",
-//     keys: ["SOME_KEY"],
-//     lastChangedDate: "2024-10-15T16:03:38.3139986Z",
-//   },
-//   {
-//     _id: {
-//       $oid: "670e925aed103e51a1809550",
-//     },
-//     environment: "infra-dev",
-//     service: "cdp-self-service-ops",
-//     keys: ["SOME_KEY"],
-//     lastChangedDate: "2024-10-15T16:03:38.8082148Z",
-//   },
-//   {
-//     _id: {
-//       $oid: "670e925bed103e51a1809555",
-//     },
-//     environment: "management",
-//     service: "cdp-self-service-ops",
-//     keys: ["SOME_KEY"],
-//     lastChangedDate: "2024-10-15T16:03:39.5206321Z",
-//   },
-// ]);
+db.tenantsecrets.updateOne(
+  {
+    environment: "infra-dev",
+    service: "cdp-self-service-ops",
+    keys: ["SOME_KEY"],
+  },
+  {
+    $setOnInsert: {
+      environment: "infra-dev",
+      service: "cdp-self-service-ops",
+      keys: ["SOME_KEY"],
+      lastChangedDate: "2024-10-15T16:03:38.8082148Z",
+    },
+  },
+  { upsert: true }
+);
+
+db.tenantsecrets.updateOne(
+  {
+    environment: "management",
+    service: "cdp-self-service-ops",
+    keys: ["SOME_KEY"],
+  },
+  {
+    $setOnInsert: {
+      environment: "management",
+      service: "cdp-self-service-ops",
+      keys: ["SOME_KEY"],
+      lastChangedDate: "2024-10-15T16:03:39.5206321Z",
+    },
+  },
+  { upsert: true }
+);
