@@ -11,12 +11,8 @@ db.teams.updateOne(
       description: "The team that runs the platform",
       github: "cdp-platform",
       users: ["90552794-0613-4023-819a-512aa9d40023"],
-      createdAt: {
-        $date: "2023-10-26T12:51:00.028Z",
-      },
-      updatedAt: {
-        $date: "2023-10-26T12:51:00.028Z",
-      },
+      createdAt: "2023-10-26T12:51:00.028Z",
+      updatedAt: "2023-10-26T12:51:00.028Z",
     },
   },
   { upsert: true }
