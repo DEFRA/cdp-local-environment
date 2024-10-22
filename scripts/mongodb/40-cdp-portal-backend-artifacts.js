@@ -191,3 +191,35 @@ db.artifacts.updateOne(
   },
   { upsert: true }
 );
+
+db.artifacts.updateOne(
+  {
+    repo: "cdp-env-test-suite",
+    tag: "0.11.0",
+  },
+  {
+    $setOnInsert: {
+      created: "2023-11-01T12:59:56.102Z",
+      repo: "cdp-env-test-suite",
+      tag: "0.11.0",
+      sha256:
+        "sha256:281e045fe5f07016cbe3092984c6bee5095fea778b7f6ade5c53bfc99cdc448e",
+      githubUrl: "https://github.com/DEFRA/cdp-env-test-suite",
+      serviceName: "cdp-env-test-suite",
+      scannerVersion: 1,
+      teams: [
+        {
+          github: "cdp-platform",
+          teamId: "aabe63e7-87ef-4beb-a596-c810631fc474",
+          name: "Platform",
+        },
+      ],
+      files: [],
+      semVer: {
+        $numberLong: "11272192",
+      },
+      runMode: "job",
+    },
+  },
+  { upsert: true }
+);
