@@ -127,6 +127,10 @@ services:
     profiles:
       - portal
 
+################################################################################
+# Proxy in front of the frontend to allow for local development
+# Cannot run at the same time as portal frontend above
+################################################################################
   cdp-portal-frontend-proxy:
     image: nginxproxy/nginx-proxy:1.4
     container_name: cdp-portal-frontend-proxy

@@ -21,7 +21,7 @@ db.repositories.updateOne(
           name: "Platform",
         },
       ],
-      topics: ["cdp", "service"],
+      topics: ["cdp", "service", "frontend", "node"],
     },
   },
   { upsert: true }
@@ -48,7 +48,7 @@ db.repositories.updateOne(
           name: "Platform",
         },
       ],
-      topics: ["cdp", "service"],
+      topics: ["cdp", "service", "backend", "dotnet"],
     },
   },
   { upsert: true }
@@ -75,7 +75,7 @@ db.repositories.updateOne(
           name: "Platform",
         },
       ],
-      topics: ["cdp", "service"],
+      topics: ["cdp", "service", "backend", "node"],
     },
   },
   { upsert: true }
@@ -102,7 +102,7 @@ db.repositories.updateOne(
           name: "Platform",
         },
       ],
-      topics: ["cdp", "service"],
+      topics: ["cdp", "service", "backend", "node"],
     },
   },
   { upsert: true }
@@ -129,7 +129,7 @@ db.repositories.updateOne(
           name: "Platform",
         },
       ],
-      topics: ["cdp", "tests"],
+      topics: ["cdp", "test", "test-suite", "environment"],
     },
   },
   { upsert: true }
