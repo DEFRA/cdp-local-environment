@@ -28,6 +28,9 @@ aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-nam
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name cdp-uploader-scan-results-callback.fifo --attributes "{\"FifoQueue\":\"true\"}"
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name mock-clamav
 
+echo Setting up CDP Notify
+aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name cdp_grafana_alerts
+
 echo Setting up stub test suite runs
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name run-test-from-portal
 aws --endpoint $LOCALSTACK_URL sns create-topic --region $AWS_REGION --name run-test-topic
