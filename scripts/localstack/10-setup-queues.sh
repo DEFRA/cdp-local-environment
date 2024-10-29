@@ -6,6 +6,7 @@ source /etc/localstack/conf.d/local-defaults.env
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name ecs-deployments
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name ecr-push-events
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name github-events
+aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name cdp_workflow_events
 
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name deployments-from-portal
 aws --endpoint $LOCALSTACK_URL sns create-topic --region $AWS_REGION --name deploy-topic
