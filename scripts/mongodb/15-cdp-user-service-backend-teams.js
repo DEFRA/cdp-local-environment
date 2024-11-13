@@ -17,3 +17,21 @@ db.teams.updateOne(
   },
   { upsert: true }
 );
+
+db.teams.updateOne(
+    {
+      name: "TenantTeam1",
+    },
+    {
+      $setOnInsert: {
+        _id: "44c7fa74-40e7-470d-a18a-b78a60bbef8e",
+        name: "TenantTeam1",
+        description: "A test team",
+        github: "cdp-tenant-1",
+        users: [],
+        createdAt: "2024-10-26T12:51:00.028Z",
+        updatedAt: "2024-10-26T12:55:00.028Z",
+      },
+    },
+    { upsert: true }
+);
