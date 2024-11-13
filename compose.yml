@@ -246,6 +246,7 @@ services:
       - 3939:3939
     environment:
       - PORT=3939
+      - OIDC_SHOW_LOGIN=true
     depends_on:
       localstack:
         condition: service_healthy
