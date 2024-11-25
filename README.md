@@ -178,7 +178,7 @@ First, add the service definition to the compose.yml:
 You'll need to replace:
 
 | | |
-|---------------------------------------------------------------------------------------------------|
+|----|-----|
 | service-name | actual service name (multiple places: section header, container_name, env_file) |
 | image-name | name of docker image, generally same as service-name |
 | PORT | a unique port number, not used by other services in the profile (nodejs only)   |
@@ -433,3 +433,17 @@ To use a local squid proxy for outgoing http traffic:
   ```
   export CDP_HTTP_PROXY=http://localhost:3128
   ```
+
+## Terminal
+
+1. Build a Docker image of https://github.com/DEFRA/cdp-webshell-proxy with the tag `defradigital/cdp-webshell-proxy`
+
+   ```
+   cd ../cdp-webshell-proxy
+   docker build -tag defradigital/cdp-webshell-proxy .
+   ```
+1. Launch as `terminal` profile
+
+   ```bash
+   docker compose --profile terminal up -d
+   ```
