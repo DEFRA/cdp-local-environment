@@ -16,6 +16,7 @@
 * [Mixing with local running services](#mixing-with-local-running-services)
 * [Custom URL](#custom-url)
     * [Running a local version of the frontend](#running-a-local-version-of-the-frontend)
+    * [Running a local version of self service ops](#running-a-local-version-of-self-service-ops)
     * [Running a local version of the stubs](#running-a-local-version-of-the-stubs)
     * [Changing custom URL](#changing-custom-url)
 * [MongoDb Archives](#mongodb-archives)
@@ -271,6 +272,27 @@ NODE_ENV=development APP_BASE_URL=http://localhost:3000 USE_SINGLE_INSTANCE_CACH
 
 1. Open your browser with [http://localhost:3000](http://localhost:3000)
 1. You can now develop the frontend and run the tests against this and the rest of the services served via
+   `cdp-local-environment`
+
+### Running a local version of self service ops
+
+1. Start the portal services as described in the first 2 steps of [Using with Portal tests](#using-with-portal-tests)
+1. Stop Self Service Ops
+
+```bash
+docker compose stop cdp-self-service-ops
+```
+
+1. Start Self Service Ops in development mode
+
+> Note over time these environment variables may change, so check the latest in
+> the [config/cdp-self-service-ops.env](config/cdp-self-service-ops.env).
+
+```bash
+GITHUB_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939 SQS_GITHUB_QUEUE=http://localstack:4566/000000000000/github-events USER_SERVICE_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:3001 PORTAL_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:5094 OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
+````
+
+1. You can now develop Self Service Ops and run the tests against this and the rest of the services served via
    `cdp-local-environment`
 
 ### Running a local version of the stubs
