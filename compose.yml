@@ -230,6 +230,22 @@ services:
       - portal
 
 ################################################################################
+  cdp-webshell-proxy:
+    image: defradigital/cdp-webshell-proxy:${CDP_WEBSHELL_PROXY:-latest}
+    container_name: cdp-webshell-proxy
+    networks:
+      - cdpnet
+    ports:
+      - 8085:8085
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
+    profiles:
+      - terminal
+
+
+################################################################################
   cdp-portal-stubs:
     image: defradigital/cdp-portal-stubs:${CDP_PORTAL_STUBS:-latest}
     container_name: cdp-portal-stubs
