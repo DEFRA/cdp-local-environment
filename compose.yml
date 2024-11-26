@@ -151,7 +151,7 @@ services:
       - ./config/cdp-portal-frontend-proxy.conf:/etc/nginx/conf.d/cdp-portal-frontend-proxy.conf:ro
     profiles:
       - proxies
-      
+
 ################################################################################
   cdp-user-service-backend:
     image: defradigital/cdp-user-service-backend:${CDP_USER_SERVICE_BACKEND:-latest}
