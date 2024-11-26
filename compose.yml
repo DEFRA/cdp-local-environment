@@ -151,7 +151,7 @@ services:
       - ./config/cdp-portal-frontend-proxy.conf:/etc/nginx/conf.d/cdp-portal-frontend-proxy.conf:ro
     profiles:
       - proxies
-      
+
 ################################################################################
   cdp-user-service-backend:
     image: defradigital/cdp-user-service-backend:${CDP_USER_SERVICE_BACKEND:-latest}
@@ -228,6 +228,21 @@ services:
       start_period: 2s
     profiles:
       - portal
+
+################################################################################
+  cdp-webshell:
+    image: defradigital/cdp-webshell:${CDP_WEBSHELL:-latest}
+    container_name: cdp-webshell
+    networks:
+      - cdpnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
+    environment:
+      - TOKEN=12345
+    profiles:
+      - terminal
 
 ################################################################################
   cdp-webshell-proxy:
