@@ -17,6 +17,7 @@
 * [Custom URL](#custom-url)
     * [Running a local version of the frontend](#running-a-local-version-of-the-frontend)
     * [Running a local version of self service ops](#running-a-local-version-of-self-service-ops)
+    * [Running a local version of user service backend](#running-a-local-version-of-user-service-backend)
     * [Running a local version of the stubs](#running-a-local-version-of-the-stubs)
     * [Changing custom URL](#changing-custom-url)
 * [MongoDb Archives](#mongodb-archives)
@@ -24,6 +25,7 @@
     * [Updating the archives](#updating-the-archives)
     * [Making the archives available](#making-the-archives-available)
 * [Squid proxy](#squid-proxy)
+* [Terminal](#terminal)
 
 ## Requirements
 
@@ -177,13 +179,13 @@ First, add the service definition to the compose.yml:
 
 You'll need to replace:
 
-| | |
-|----|-----|
-| service-name | actual service name (multiple places: section header, container_name, env_file) |
-| image-name | name of docker image, generally same as service-name |
-| PORT | a unique port number, not used by other services in the profile (nodejs only)   |
+|                 |                                                                                 |
+|-----------------|---------------------------------------------------------------------------------|
+| service-name    | actual service name (multiple places: section header, container_name, env_file) |
+| image-name      | name of docker image, generally same as service-name                            |
+| PORT            | a unique port number, not used by other services in the profile (nodejs only)   |
 | ASPNETCORE_URLS | a unique port number, not used by other services in the profile (c# only)       |
-| profile-name | the same of the profile its part of |
+| profile-name    | the same of the profile its part of                                             |
 
 Next you'll need to create a new .env file for your service in `./config`. The file name should match the name defined
 in the `env_file` section of the service definition.
@@ -293,6 +295,27 @@ GITHUB_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939 SQS_GITHUB_QUEUE=http://local
 ````
 
 1. You can now develop Self Service Ops and run the tests against this and the rest of the services served via
+   `cdp-local-environment`
+
+### Running a local version of user service backend
+
+1. Start the portal services as described in the first 2 steps of [Using with Portal tests](#using-with-portal-tests)
+1. Stop User Service Backend
+
+```bash
+docker compose stop cdp-user-service-backend
+```
+
+1. Start User Service Backend in development mode
+
+> Note over time these environment variables may change, so check the latest in
+> the [config/cdp-user-service-backend.env](config/cdp-user-service-backend.env).
+
+```bash
+GITHUB_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939 AZURE_CLIENT_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939/msgraph/ OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
+````
+
+1. You can now develop User Service Backend and run the tests against this and the rest of the services served via
    `cdp-local-environment`
 
 ### Running a local version of the stubs
