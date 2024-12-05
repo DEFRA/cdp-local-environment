@@ -129,7 +129,7 @@ db.repositories.updateOne(
           name: "Platform",
         },
       ],
-      topics: ["cdp", "test", "test-suite", "environment"],
+      topics: ["cdp", "test", "test-suite", "journey"],
     },
   },
   { upsert: true }
