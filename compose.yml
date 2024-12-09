@@ -149,9 +149,12 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./config/cdp-portal-frontend-proxy.conf:/etc/nginx/conf.d/cdp-portal-frontend-proxy.conf:ro
+    depends_on:
+      proxy:
+        condition: service_started
     profiles:
       - proxies
-      
+
 ################################################################################
   cdp-user-service-backend:
     image: defradigital/cdp-user-service-backend:${CDP_USER_SERVICE_BACKEND:-latest}
@@ -198,6 +201,8 @@ services:
       - ASPNETCORE_URLS=http://+:5094
     depends_on:
       cdp-user-service-backend:
+        condition: service_healthy
+      cdp-self-service-ops:
         condition: service_healthy
     profiles:
       - portal
