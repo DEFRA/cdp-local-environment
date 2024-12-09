@@ -27,7 +27,7 @@ db.scopes.updateOne(
     $setOnInsert: {
       _id: new ObjectId("6750708d454fcbbcc1568154"),
       userId: "90552794-0613-4023-819a-512aa9d40023",
-      value: "breakglass",
+      value: "breakGlass",
       teams: [
       ],
       createdAt: "2024-12-02T17:34:21.295Z",

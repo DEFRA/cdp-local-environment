@@ -5,22 +5,25 @@
 * [Starting a profile](#starting-a-profile)
 * [Using with Portal tests](#using-with-portal-tests)
 * [Diagnosing issues](#diagnosing-issues)
-    * [Docker container logs](#docker-container-logs)
-    * [Docker container information](#docker-container-information)
-    * [Connect to Redis container](#connect-to-redis-container)
-    * [Connect to Mongo Docker](#connect-to-mongo-docker)
+  * [Docker container logs](#docker-container-logs)
+  * [Docker container information](#docker-container-information)
+  * [Connect to Redis container](#connect-to-redis-container)
+  * [Connect to Mongo Docker](#connect-to-mongo-docker)
 * [Mongo failing to connect issues](#mongo-failing-to-connect-issues)
-    * [Running a different version](#running-a-different-version)
+  * [Running a different version](#running-a-different-version)
 * [Adding services and Creating a profile](#adding-services-and-creating-a-profile)
 * [Adding a setup task to a profile](#adding-a-setup-task-to-a-profile)
 * [Mixing with local running services](#mixing-with-local-running-services)
 * [Custom URL](#custom-url)
-    * [Running a local version of the frontend](#running-a-local-version-of-the-frontend)
-    * [Running a local version of self service ops](#running-a-local-version-of-self-service-ops)
-    * [Running a local version of user service backend](#running-a-local-version-of-user-service-backend)
-    * [Running a local version of the stubs](#running-a-local-version-of-the-stubs)
-    * [Changing custom URL](#changing-custom-url)
-* [MongoDb Archives](#mongodb-archives)
+  * [Running a local version of the frontend](#running-a-local-version-of-the-frontend)
+  * [Running a local version of self service ops](#running-a-local-version-of-self-service-ops)
+  * [Running a local version of user service backend](#running-a-local-version-of-user-service-backend)
+  * [Running a local version of the stubs](#running-a-local-version-of-the-stubs)
+  * [Changing custom URL](#changing-custom-url)
+* [MongoDB](#mongodb)
+  * [Adding data](#adding-data)
+  * [Re-running the scripts](#re-running-the-scripts)
+  * [Archives](#archives)
     * [Viewing the archives](#viewing-the-archives)
     * [Updating the archives](#updating-the-archives)
     * [Making the archives available](#making-the-archives-available)
@@ -160,21 +163,21 @@ First, add the service definition to the compose.yml:
 
 ```yaml
   service-name:
-      image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/image-name:${SERVICE_NAME:-latest}
-      container_name: service-name
-      networks:
-          - cdpnet
-      extra_hosts:
-          - "host.docker.internal:host-gateway"
-          - "cdp.127.0.0.1.sslip.io:host-gateway"
-      env_file:
-          - ./config/local-defaults.env
-          - ./config/service-name.env
-      environment:
-          - PORT=1234                      # NodeJS only
-          - ASPNETCORE_URLS=http://+:1234  # C Sharp only
-      profiles:
-          - profile-name
+    image: 163841473800.dkr.ecr.eu-west-2.amazonaws.com/image-name:${SERVICE_NAME:-latest}
+    container_name: service-name
+    networks:
+      - cdpnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
+    env_file:
+      - ./config/local-defaults.env
+      - ./config/service-name.env
+    environment:
+      - PORT=1234                      # NodeJS only
+      - ASPNETCORE_URLS=http://+:1234  # C Sharp only
+    profiles:
+      - profile-name
 ```
 
 You'll need to replace:
@@ -203,19 +206,19 @@ First, add a new service to the docker compose:
 
 ```yaml
   setup-{SERVICE_NAME}:
-      image: cdp-local-setup:latest
-      network_mode: "host"
-      env_file:
-          - ./config/local-defaults.env
-      depends_on:
-          - localstack
-          - mongodb
-          - redis
-      volumes:
-          - ./scripts/{SERVICE_NAME}:/scripts:ro
-      restart: "no"
-      profiles:
-          - { PROFILE }
+    image: cdp-local-setup:latest
+    network_mode: "host"
+    env_file:
+      - ./config/local-defaults.env
+    depends_on:
+      - localstack
+      - mongodb
+      - redis
+    volumes:
+      - ./scripts/{SERVICE_NAME}:/scripts:ro
+    restart: "no"
+    profiles:
+      - { PROFILE }
 ```
 
 The image `cdp-local-setup` contains a mongo, redis and localstack/aws client. On startup it runs all the scripts found
@@ -269,10 +272,10 @@ docker compose stop cdp-portal-frontend
 > the [config/cdp-portal-frontend.env](config/cdp-portal-frontend.env).
 
 ```bash
-NODE_ENV=development APP_BASE_URL=http://localhost:3000 USE_SINGLE_INSTANCE_CACHE=true PORTAL_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:5094 SELF_SERVICE_OPS_URL=http://cdp.127.0.0.1.sslip.io:3009 USER_SERVICE_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:3001 AZURE_CLIENT_SECRET=test_value OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration AZURE_TENANT_ID=63983fc2-cfff-45bb-8ec2-959e21062b9a OIDC_AUDIENCE=63983fc2-cfff-45bb-8ec2-959e21062b9a npm run dev:debug
+NODE_ENV=development APP_BASE_URL=http://cdp.127.0.0.1.sslip.io:3000 USE_SINGLE_INSTANCE_CACHE=true PORTAL_BACKEND_URL=http://host.docker.internal:5094 SELF_SERVICE_OPS_URL=http://host.docker.internal:3009 USER_SERVICE_BACKEND_URL=http://host.docker.internal:3001 AZURE_CLIENT_SECRET=test_value OIDC_WELL_KNOWN_CONFIGURATION_URL=http://host.docker.internal:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration AZURE_TENANT_ID=63983fc2-cfff-45bb-8ec2-959e21062b9a OIDC_AUDIENCE=63983fc2-cfff-45bb-8ec2-959e21062b9a npm run dev:debug
 ````
 
-1. Open your browser with [http://localhost:3000](http://localhost:3000)
+1. Open your browser with [http://cdp.127.0.0.1.sslip.io:3000](http://cdp.127.0.0.1.sslip.io:3000)
 1. You can now develop the frontend and run the tests against this and the rest of the services served via
    `cdp-local-environment`
 
@@ -291,7 +294,7 @@ docker compose stop cdp-self-service-ops
 > the [config/cdp-self-service-ops.env](config/cdp-self-service-ops.env).
 
 ```bash
-GITHUB_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939 SQS_GITHUB_QUEUE=http://localstack:4566/000000000000/github-events USER_SERVICE_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:3001 PORTAL_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:5094 OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
+GITHUB_BASE_URL=http://host.docker.internal:3939 SQS_GITHUB_QUEUE=http://localstack:4566/000000000000/github-events USER_SERVICE_BACKEND_URL=http://host.docker.internal:3001 PORTAL_BACKEND_URL=http://host.docker.internal:5094 OIDC_WELL_KNOWN_CONFIGURATION_URL=http://host.docker.internal:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
 ````
 
 1. You can now develop Self Service Ops and run the tests against this and the rest of the services served via
@@ -312,7 +315,7 @@ docker compose stop cdp-user-service-backend
 > the [config/cdp-user-service-backend.env](config/cdp-user-service-backend.env).
 
 ```bash
-GITHUB_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939 AZURE_CLIENT_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939/msgraph/ OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
+GITHUB_BASE_URL=http://host.docker.internal:3939 AZURE_CLIENT_BASE_URL=http://host.docker.internal:3939/msgraph/ OIDC_WELL_KNOWN_CONFIGURATION_URL=http://host.docker.internal:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
 ````
 
 1. You can now develop User Service Backend and run the tests against this and the rest of the services served via
@@ -330,7 +333,7 @@ docker compose stop cdp-portal-stubs
 ```
 
 1. Make sure any services you are testing that point to the stub have their envs updated to point to
-   `http://localhost:3939`
+   `http://host.docker.internal:3939`
 1. Start the Portal stubs in development mode
 
 > Note over time these environment variables may change, so check the latest in
@@ -340,7 +343,7 @@ docker compose stop cdp-portal-stubs
 OIDC_BASE_PATH=/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0 OIDC_SHOW_LOGIN=false OIDC_PUBLIC_KEY_B64=LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JSUJDZ0tDQVFFQW1yamd3RENMMW9hb09BeWc2NmZlRHdwMDVHM2pETHJJWU4zcUxiVnZsNEFyQ1pCQkJrc3kKVlcwbmxoblZ5NmgwVVJITzJkcEtKcElFUjJEYSsyQ2ZmbWRCbDU2NDdnNTUzYUc5aWsvcVovUmRWb0FOSUo0dApBaHVhZUk0OGFhU2lSVGdOT0laczlBQTlPQXZPM1kwTCsyZmE4d1JzUnUvaTBwSTZqNnU3OG11WTJoNkl3UzJ0CjFEbjM4U0JFdzNRRktRUTV2c3d5eHA3VUtXdHNjdEs4MTk5NUN0VzJHNzJRQTJHQWsxMGs4L2ZMaExkaGQ1cksKR0FYeUsxeUk1YXpwckdZVm5Sa2VDem1mVE84aXBjSFJoVkVNeVFrRFRaVnJqeWRHcytqVm05d1poaWcrT1F5bwp3OUZ5ais4WGhxQXRnR0NBa1JlWFR2WlgrQ0VkYkxLMy9RSURBUUFCCi0tLS0tRU5EIFJTQSBQVUJMSUMgS0VZLS0tLS0K OIDC_PRIVATE_KEY_B64=LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb2dJQkFBS0NBUUVBbXJqZ3dEQ0wxb2FvT0F5ZzY2ZmVEd3AwNUczakRMcklZTjNxTGJWdmw0QXJDWkJCCkJrc3lWVzBubGhuVnk2aDBVUkhPMmRwS0pwSUVSMkRhKzJDZmZtZEJsNTY0N2c1NTNhRzlpay9xWi9SZFZvQU4KSUo0dEFodWFlSTQ4YWFTaVJUZ05PSVpzOUFBOU9Bdk8zWTBMKzJmYTh3UnNSdS9pMHBJNmo2dTc4bXVZMmg2SQp3UzJ0MURuMzhTQkV3M1FGS1FRNXZzd3l4cDdVS1d0c2N0SzgxOTk1Q3RXMkc3MlFBMkdBazEwazgvZkxoTGRoCmQ1cktHQVh5SzF5STVhenByR1lWblJrZUN6bWZUTzhpcGNIUmhWRU15UWtEVFpWcmp5ZEdzK2pWbTl3WmhpZysKT1F5b3c5RnlqKzhYaHFBdGdHQ0FrUmVYVHZaWCtDRWRiTEszL1FJREFRQUJBb0lCQUJmRjVlU3A0T2FrdUphcQpIQlN4YloxK2hCRHdNSFdOZ29uZHR5UndUeFhtYjladmw0b2x4alZaaVA1WGVHSHJQM29RWkNuVmtGU21WV2w1ClFKUmsxNFRXelQyRWVoSTczNjQxOHBkY3FaM3c3bUdDMmVHRDVGTUJWa1lGUnRPTnBCQkNLVWZnNGI5SkJSOEcKTTNJWHdMcFBqaFVPZml1Vkl0TXJmRHVFamVPVXR3cy9FR1ZLRzk4RTZkU1hWK3draUZlam1EOXFNdmV2VWNxKwpaUjlXMzlVZzZXTTgxUmd3ZHQ1NUQwZGVQRUdvYWppVnN3Q2RDZXZreklLYm4zNFd5MldDRE9yS0Q2OFduTjZsCms3dCt3ejJqTUxxeWJFa0psZVZYUk40dG5SM3JOZ3JJV21WNnU0RDFlR1hyYStzbk5SZWx4RkZOc0lQQTJyaDYKRWNKR2s2RUNnWUVBenBFUzRlOFJmRDFWcHloMWtHRnJ0VGF3aEhTL29BSDJxNjFBb3Y0MTdIR1JzWjdEN0FGSQpGdXBQTWFMV3d1TFlvMlhjR3I0ODE3U1p6WFBsZHROVXZaWmE4VTdCd1pRaGgyczMrS0o5OEh3N05xUVJtVXpyCjJtcTZDY3RQc0V6V2dVOGdmMStsTVZUQ3ZpUzdyOFVnUDVma20zVnRpNndoZXdLaWRBYnpyTjBDZ1lFQXY3K2wKV29GdVgvSEZUQ0FDSTZPbjZPMzJWV05vMnJFZi9RKzlzNTRxZnlMT2lCOUxORm04QTF4YXZNNDBOcnlVb2JLNQpKT1FxUGhsTUNYcUhxYVlqWWVSUmIvc09ud2w3cVlwcVZXQXFoVEUzZko4T0ZDN1lqLzVveFZ3YlM4VzVoa3JKClRZZ3JTUDZUVWNaMEo1U3RKTWZESDdMK0YxRzVTVnBUa2hVYWRhRUNnWUFVVVRTWVFGbHA3T1oxMElidnNvVlQKaDVPSkU2cWRaRlFNd3JldTBHNGhXWEpKRkNLVkhmTW5QZGlZT3pvQVpTdUZ0c2tWWUV5L3NxWEdEWFl1WDg3Zgo3dC8zQ0JZS29qVkNDb3V3eXRxMFFxUFlWZjdkSXpHM2cvUFVic2pod0UwQTN2V0ZVYlQveXlSMGEweUNsMUw2CnJrZnYrbmJSM0JaVzhRVmxnQ0dMaVFLQmdIOU9Cc05EQVh2VHNiRHI0MSswRFF1NXlYMUJoZUVFRGYvZWpvME4KS3B2RUNTa1kxYjVKQVdtZHpHUmo1d2ljUlhYaGljaHpiNVJSQ1VtVnZ6SWtLb09ZcVhUV1V3dkZxUU9UOFNzRApzTmRES05xbFl4eUZTYVM0UE9ralVNQUs0elRFdkVlc2EwaUlORmpya0R5akdoMDhQMUR4Ym44ZTlBdytXeE8yCnpSMWhBb0dBY0tYb01aaTFVK1h5dEpNWlhxUmE0R3hBc1pqRk5DZS9hNld6RGlnaXhtMnN4YXdVc09QeVlyU0EKZlRTV0pVZHkzaVVIV1BmdUtiQ2c4N1hUUVRHUUFXR0RUc3lMVXZ1TlVhQVpSMFZock12NGVxZS9IaEpoQ1V3agp6Z05vK0hHMDlYVytMWlM3S3BBbSsvYmRFZFJaQ3I4eEs4QXYwOFI2Z0FxNTIvWlZCTVU9Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg== npm run dev
 ````
 
-1. Stubs are now running on [http://localhost:3939](http://localhost:3939)
+1. Stubs are now running on [http://host.docker.internal:3939](http://host.docker.internal:3939)
 1. You can now develop the Portal stubs and run the tests against this and the rest of the services served via
    `cdp-local-environment`
 
@@ -390,9 +393,32 @@ Or if you want to use use IPv6 (and port 80):
 
 * Open your browser with [http://cdp.--1.sslip.io](http://cdp.--1.sslip.io)
 
-## MongoDb Archives
+## MongoDB
 
-### Viewing the archives
+### Adding data
+
+The first time the `cdp-infra-mongodb` mongo image is built, it will run any scripts found in `/scripts/mongodb`. Any
+files found in the `/scripts/mongodb` directory will be run in alphabetical order in a mongo shell.
+
+Mongo shell methods and helpers available to these scripts are https://www.mongodb.com/docs/manual/reference/method/
+
+#### Re-running the scripts
+
+These scripts will only be ran when there is nothing in the containers `/data/db` directory. To re-run these scripts:
+
+1. `Docker compose down` to stop the containers
+1. `Docker volume rm cdp-infra-mongodb` to remove the volume
+1. `Docker compose up` to start the containers
+
+### Archives
+
+> [!IMPORTANT]
+> *DEPRECATED* The way to add MongoDb data is documented
+> in [Adding data](#adding-data). These archives are still in
+> use but should not be used to add new data. At some point they will be ported over to the new way of adding mongo mock
+> data.
+
+#### Viewing the archives
 
 First of all insert the MongoDB archives found in [scripts/portal](scripts/portal) into your local MongoDB so you can
 see the data.
@@ -405,7 +431,7 @@ mongorestore --host="127.0.0.1:27017" --gzip --archive=cdp-user-service-backend.
 mongorestore --host="127.0.0.1:27017" --gzip --archive=cdp-portal-backend.archive --drop
 ```
 
-### Updating the archives
+#### Updating the archives
 
 Make changes to the MongoDB database collections in Compass/MongoDB locally. Then run the following command to export as
 an archive.
@@ -415,7 +441,7 @@ mongodump --host="127.0.0.1:27017" -d=cdp-user-service-backend --gzip --archive=
 mongodump --host="127.0.0.1:27017" -d=cdp-portal-backend --gzip --archive=cdp-portal-backend.archive
 ```
 
-### Making the archives available
+#### Making the archives available
 
 To allow `cdp-local-environment` to use the data in the archives. Add the following command
 to [scripts/portal/setup-mongo.sh](scripts/portal/setup-mongo.sh)
