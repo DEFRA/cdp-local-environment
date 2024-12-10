@@ -485,14 +485,24 @@ To use a local squid proxy for outgoing http traffic:
 
 ## Terminal
 
+### Terminal
+
+1. Build a Docker image of https://github.com/DEFRA/cdp-webshell with the tag `defradigital/cdp-webshell`
+
+   ```bash
+   cd ../cdp-webshell;
+   docker build -tag defradigital/cdp-webshell .
+   ```
+
 1. Build a Docker image of https://github.com/DEFRA/cdp-webshell-proxy with the tag `defradigital/cdp-webshell-proxy`
 
-   ```
-   cd ../cdp-webshell-proxy
+   ```bash
+   cd ../cdp-webshell-proxy;
    docker build -tag defradigital/cdp-webshell-proxy .
    ```
 1. Launch as `terminal` profile
 
    ```bash
+   cd ../cdp-local-environment;
    docker compose --profile terminal up -d
    ```
