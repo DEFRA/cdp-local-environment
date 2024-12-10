@@ -149,6 +149,9 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./config/cdp-portal-frontend-proxy.conf:/etc/nginx/conf.d/cdp-portal-frontend-proxy.conf:ro
+    depends_on:
+      proxy:
+        condition: service_started
     profiles:
       - proxies
 
@@ -198,6 +201,8 @@ services:
       - ASPNETCORE_URLS=http://+:5094
     depends_on:
       cdp-user-service-backend:
+        condition: service_healthy
+      cdp-self-service-ops:
         condition: service_healthy
     profiles:
       - portal
@@ -262,7 +267,6 @@ services:
       - 3939:3939
     environment:
       - PORT=3939
-      - OIDC_SHOW_LOGIN=true
     depends_on:
       localstack:
         condition: service_healthy
