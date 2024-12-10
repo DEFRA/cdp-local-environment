@@ -485,8 +485,6 @@ To use a local squid proxy for outgoing http traffic:
 
 ## Terminal
 
-### Terminal
-
 1. Build a Docker image of https://github.com/DEFRA/cdp-webshell with the tag `defradigital/cdp-webshell`
 
    ```bash
