@@ -407,7 +407,7 @@ Mongo shell methods and helpers available to these scripts are https://www.mongo
 These scripts will only be ran when there is nothing in the containers `/data/db` directory. To re-run these scripts:
 
 1. `Docker compose down` to stop the containers
-1. `Docker volume rm cdp-infra-mongodb` to remove the volume
+1. `Docker volume rm cdp-local-environment_cdp-infra-mongodb-data` to remove the volume
 1. `Docker compose up` to start the containers
 
 ### Archives
