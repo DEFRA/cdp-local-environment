@@ -8,9 +8,9 @@ aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-nam
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name github-events
 
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name cdp_workflow_events
-aws --endpoint http://localhost:4566 sns create-topic --name cdp_workflow_events
-aws --endpoint http://localhost:4566 sns subscribe --topic-arn arn:aws:sns:eu-west-2:000000000000:cdp_workflow_events --protocol sqs --notification-endpoint arn:aws:sqs:eu-west-2:000000000000:cdp_workflow_events
-#aws --endpoint http://localhost:4566 set-subscription-attributes --subscription-arn arn:aws:sns:eu-west-2:000000000000:cdp_workflow_events:85502ec3-9ea1-429d-99be-682f2fcbb895 --attribute-name RawMessageDelivery --attribute-value true
+aws --endpoint $LOCALSTACK_URL sns create-topic --region $AWS_REGION --name cdp_workflow_events
+aws --endpoint $LOCALSTACK_URL sns subscribe --region $AWS_REGION --topic-arn arn:aws:sns:eu-west-2:000000000000:cdp_workflow_events --protocol sqs --notification-endpoint arn:aws:sqs:eu-west-2:000000000000:cdp_workflow_events
+#aws --endpoint http://localhost:4566 sns set-subscription-attributes --subscription-arn arn:aws:sns:eu-west-2:000000000000:cdp_workflow_events:548d699f-6aa0-4932-b3a7-8bee767d9ad9 --attribute-name RawMessageDelivery --attribute-value true
 
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name deployments-from-portal
 aws --endpoint $LOCALSTACK_URL sns create-topic --region $AWS_REGION --name deploy-topic
