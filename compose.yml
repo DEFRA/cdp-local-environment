@@ -50,10 +50,10 @@ services:
       - ./config/local-defaults.env:/etc/localstack/conf.d/local-defaults.env:ro
       - ./scripts/localstack:/etc/localstack/init/ready.d
     healthcheck:
-      test: ["CMD", "curl", "localhost:4566"]
-      interval: 5s
+      test: ["CMD", "stat", "/tmp/READY"]
+      interval: 3s
       start_period: 5s
-      retries: 3
+      retries: 20
 
 ################################################################################
   redis:
@@ -120,7 +120,7 @@ services:
       cdp-portal-stubs:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
+      test: ["CMD", "curl", "http://localhost:3000"]
       interval: 3s
       start_period: 2s
       retries: 3
@@ -176,7 +176,7 @@ services:
       cdp-portal-stubs:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
+      test: ["CMD", "curl", "http://localhost:3001"]
       interval: 3s
       start_period: 2s
     profiles:
@@ -228,7 +228,7 @@ services:
     environment:
       - PORT=3009
     healthcheck:
-      test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
+      test: ["CMD", "curl", "http://localhost:3009"]
       interval: 3s
       start_period: 2s
     profiles:
@@ -275,7 +275,7 @@ services:
       redis:
         condition: service_started
     healthcheck:
-      test: ["CMD", "echo", "Y29uc3QgZT1yZXF1aXJlKCJodHRwIiksdD17aG9zdG5hbWU6ImxvY2FsaG9zdCIscG9ydDpwcm9jZXNzLmVudi5QT1JULHBhdGg6Ii9oZWFsdGgiLG1ldGhvZDoiR0VUIn0sbz1lLnJlcXVlc3QodCwoZT0+e2xldCB0PSIiO2Uub24oImRhdGEiLChlPT57dCs9ZX0pKSxlLm9uKCJlbmQiLCgoKT0+e3Byb2Nlc3MuZXhpdCgwKX0pKX0pKTtvLm9uKCJlcnJvciIsKGU9Pntwcm9jZXNzLmV4aXQoMSl9KSksby5lbmQoKTsK", "|", "base64", "-d", "|", "node", "-"]
+      test: ["CMD", "curl", "http://localhost:3939"]
       interval: 3s
       start_period: 2s
     profiles:
