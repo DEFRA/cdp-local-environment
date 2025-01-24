@@ -272,7 +272,7 @@ docker compose stop cdp-portal-frontend
 > the [config/cdp-portal-frontend.env](config/cdp-portal-frontend.env).
 
 ```bash
-NODE_ENV=development APP_BASE_URL=http://cdp.127.0.0.1.sslip.io:3000 USE_SINGLE_INSTANCE_CACHE=true PORTAL_BACKEND_URL=http://host.docker.internal:5094 SELF_SERVICE_OPS_URL=http://host.docker.internal:3009 USER_SERVICE_BACKEND_URL=http://host.docker.internal:3001 AZURE_CLIENT_SECRET=test_value OIDC_WELL_KNOWN_CONFIGURATION_URL=http://host.docker.internal:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration AZURE_TENANT_ID=63983fc2-cfff-45bb-8ec2-959e21062b9a OIDC_AUDIENCE=63983fc2-cfff-45bb-8ec2-959e21062b9a npm run dev:debug
+NODE_ENV=development APP_BASE_URL=http://cdp.127.0.0.1.sslip.io:3000 USE_SINGLE_INSTANCE_CACHE=true PORTAL_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:5094 SELF_SERVICE_OPS_URL=http://cdp.127.0.0.1.sslip.io:3009 USER_SERVICE_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:3001 AZURE_CLIENT_SECRET=test_value OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration AZURE_TENANT_ID=63983fc2-cfff-45bb-8ec2-959e21062b9a OIDC_AUDIENCE=63983fc2-cfff-45bb-8ec2-959e21062b9a npm run dev:debug
 ````
 
 1. Open your browser with [http://cdp.127.0.0.1.sslip.io:3000](http://cdp.127.0.0.1.sslip.io:3000)
@@ -294,7 +294,7 @@ docker compose stop cdp-self-service-ops
 > the [config/cdp-self-service-ops.env](config/cdp-self-service-ops.env).
 
 ```bash
-GITHUB_BASE_URL=http://host.docker.internal:3939 SQS_GITHUB_QUEUE=http://localstack:4566/000000000000/github-events USER_SERVICE_BACKEND_URL=http://host.docker.internal:3001 PORTAL_BACKEND_URL=http://host.docker.internal:5094 OIDC_WELL_KNOWN_CONFIGURATION_URL=http://host.docker.internal:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
+GITHUB_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939 SQS_GITHUB_QUEUE=http://localstack:4566/000000000000/github-events USER_SERVICE_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:3001 PORTAL_BACKEND_URL=http://cdp.127.0.0.1.sslip.io:5094 OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
 ````
 
 1. You can now develop Self Service Ops and run the tests against this and the rest of the services served via
@@ -315,7 +315,7 @@ docker compose stop cdp-user-service-backend
 > the [config/cdp-user-service-backend.env](config/cdp-user-service-backend.env).
 
 ```bash
-GITHUB_BASE_URL=http://host.docker.internal:3939 AZURE_CLIENT_BASE_URL=http://host.docker.internal:3939/msgraph/ OIDC_WELL_KNOWN_CONFIGURATION_URL=http://host.docker.internal:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
+GITHUB_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939 AZURE_CLIENT_BASE_URL=http://cdp.127.0.0.1.sslip.io:3939/msgraph/ OIDC_WELL_KNOWN_CONFIGURATION_URL=http://cdp.127.0.0.1.sslip.io:3939/63983fc2-cfff-45bb-8ec2-959e21062b9a/v2.0/.well-known/openid-configuration npm run dev:debug
 ````
 
 1. You can now develop User Service Backend and run the tests against this and the rest of the services served via
