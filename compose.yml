@@ -32,7 +32,7 @@ services:
 
 ################################################################################
   localstack:
-    image: localstack/localstack:3.2.0
+    image: localstack/localstack:4.3.0
     container_name: cdp-infra-localstack
     networks:
       - cdpnet
