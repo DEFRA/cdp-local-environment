@@ -7,6 +7,7 @@ aws --endpoint-url=$LOCALSTACK_URL s3 --region $AWS_REGION mb s3://my-bucket
 aws --endpoint-url=$LOCALSTACK_URL s3 --region $AWS_REGION mb s3://cdp-uploader-quarantine
 aws --endpoint-url=$LOCALSTACK_URL s3 --region $AWS_REGION mb s3://cdp-example-node-frontend
 aws --endpoint-url=$LOCALSTACK_URL s3 --region $AWS_REGION mb s3://cdp-documentation
+aws --endpoint-url=$LOCALSTACK_URL s3 --region $AWS_REGION mb s3://cdp-migrations
 
 echo Done!
 
