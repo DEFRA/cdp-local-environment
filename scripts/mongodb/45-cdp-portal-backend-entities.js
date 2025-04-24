@@ -9,9 +9,7 @@ db.entities.updateOne(
       "type": "Microservice",
       "subType": "Backend",
       "name": "cdp-portal-backend",
-      "created": {
-        "$date": "2016-12-05T11:21:25.000Z"
-      },
+      "created": "2016-12-05T11:21:25.000Z",
       "status": "Success",
       "teams": [
         {
@@ -33,9 +31,7 @@ db.entities.updateOne(
       "type": "Microservice",
       "subType": "Frontend",
       "name": "cdp-portal-frontend",
-      "created": {
-        "$date": "2016-12-05T11:21:25.000Z"
-      },
+      "created": "2016-12-05T11:21:25.000Z",
       "status": "Success",
       "teams": [
         {
@@ -57,9 +53,7 @@ db.entities.updateOne(
       "type": "Microservice",
       "subType": "Backend",
       "name": "cdp-self-service-ops",
-      "created": {
-        "$date": "2016-12-05T11:21:25.000Z"
-      },
+      "created": "2016-12-05T11:21:25.000Z",
       "status": "Success",
       "teams": [
         {
@@ -81,9 +75,7 @@ db.entities.updateOne(
       "type": "TestSuite",
       "subType": "Journey",
       "name": "cdp-env-test-suite",
-      "created": {
-        "$date": "2016-12-05T11:21:25.000Z"
-      },
+      "created": "2016-12-05T11:21:25.000Z",
       "status": "Success",
       "teams": [
         {
