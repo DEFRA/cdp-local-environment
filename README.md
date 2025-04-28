@@ -40,7 +40,7 @@
 Starting just the supporting infrastructure services can be done by starting docker compose without a `--profile`.
 
 ```sh
-$ docker compose up
+docker compose up
 ```
 
 This will start:
@@ -58,7 +58,7 @@ between restarts.
 > make sure you pull the latest images before starting the profile with `docker compose --profile portal pull`
 
 ```sh
-$ docker compose --profile portal up
+docker compose --profile portal up
 ```
 
 ## Using with Portal tests
@@ -68,7 +68,7 @@ To run the [cdp-portal-tests](https://github.com/DEFRA/cdp-portal-tests) against
 1. Pull the latest portal suite of docker images
 
 ```bash
-$ docker compose --profile portal pull
+docker compose --profile portal pull
 ```
 
 1. Start the portal profile
@@ -91,14 +91,14 @@ npm run test
 To see logs for a running container:
 
 ```bash
-$ docker ps
-$ docker logs <image-name>
+docker ps
+docker logs <image-name>
 ```
 
 To tail logs use:
 
 ```bash
-$ docker logs <image-name> --follow
+docker logs <image-name> --follow
 ```
 
 ### Docker container information
@@ -106,7 +106,7 @@ $ docker logs <image-name> --follow
 To see detailed information about a running container:
 
 ```bash
-$ docker inspect <image-name>
+docker inspect <image-name>
 ```
 
 ### Connect to Redis container
@@ -146,14 +146,14 @@ You can override this by setting the SERVICE_NAME variable to be the version you
 This can either be done as an export or as part of the command, for example:
 
 ```
-$ CDP_PORTAL_FRONTEND=0.66.0 CDP_SELF_SERVICE_OPS=0.10.0 docker compose --profile portal up
+CDP_PORTAL_FRONTEND=0.66.0 CDP_SELF_SERVICE_OPS=0.10.0 docker compose --profile portal up
 ```
 
 or as env vars
 
 ```sh
-$ export CDP_PORTAL_FRONTEND=0.66.0
-$ export CDP_SELF_SERVICE_OPS=0.10.0
+export CDP_PORTAL_FRONTEND=0.66.0
+export CDP_SELF_SERVICE_OPS=0.10.0
 docker compose --profile portal up
 ```
 
