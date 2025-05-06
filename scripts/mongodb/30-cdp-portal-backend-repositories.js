@@ -134,3 +134,30 @@ db.repositories.updateOne(
   },
   { upsert: true }
 );
+
+db.repositories.updateOne(
+  {
+    _id: "cdp-postgres-service",
+  },
+  {
+    $setOnInsert: {
+      _id: "cdp-postgres-service",
+      description: "cdp-postgres-service",
+      primaryLanguage: "JavaScript",
+      url: "https://github.com/DEFRA/cdp-postgres-service",
+      isArchived: false,
+      isTemplate: false,
+      isPrivate: false,
+      createdAt: [636165336850000000, 0],
+      teams: [
+        {
+          github: "cdp-platform",
+          teamId: "aabe63e7-87ef-4beb-a596-c810631fc474",
+          name: "Platform",
+        },
+      ],
+      topics: ["cdp", "service", "backend", "node"],
+    },
+  },
+  { upsert: true }
+);

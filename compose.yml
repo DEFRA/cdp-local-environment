@@ -47,6 +47,7 @@ services:
     env_file:
       - ./config/local-defaults.env
     volumes:
+      - ./scripts/localstack/assets:/opt/code/localstack/assets
       - ./config/local-defaults.env:/etc/localstack/conf.d/local-defaults.env:ro
       - ./scripts/localstack:/etc/localstack/init/ready.d
     healthcheck:
