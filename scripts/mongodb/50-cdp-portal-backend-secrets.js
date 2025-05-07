@@ -67,3 +67,20 @@ db.tenantsecrets.updateOne(
   },
   { upsert: true }
 );
+
+db.tenantsecrets.updateOne(
+  {
+    environment: "infra-dev",
+    service: "cdp-postgres-service",
+    keys: ["SOME_KEY"],
+  },
+  {
+    $setOnInsert: {
+      environment: "infra-dev",
+      service: "cdp-postgres-service",
+      keys: ["SOME_KEY"],
+      lastChangedDate: "2024-10-15T16:03:38.8082148Z",
+    },
+  },
+  { upsert: true }
+);
