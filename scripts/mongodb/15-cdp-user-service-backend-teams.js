@@ -38,6 +38,27 @@ db.scopes.updateOne(
   { upsert: true }
 );
 
+db.scopes.updateOne(
+  {
+    value: "admin"
+  },
+  {
+    $setOnInsert: {
+      _id: new ObjectId("6824a65285c4bfd4d458ab74"),
+      userId: "90552794-0613-4023-819a-512aa9d40023",
+      value: "admin",
+      kind: [ "team" ],
+      teams: [
+        "aabe63e7-87ef-4beb-a596-c810631fc474"
+      ],
+      createdAt: "2024-12-02T17:34:21.295Z",
+      updatedAt: "2024-12-02T17:34:21.295Z"
+    },
+
+  },
+  { upsert: true }
+);
+
 
 db.teams.updateOne(
   {
@@ -51,7 +72,8 @@ db.teams.updateOne(
       github: "cdp-platform",
       users: ["90552794-0613-4023-819a-512aa9d40023"],
       scopes: [
-        new ObjectId("674def9d30093e3a3aa49d35")
+        new ObjectId("674def9d30093e3a3aa49d35"),
+        new ObjectId("6824a65285c4bfd4d458ab74")
       ],
       createdAt: "2023-10-26T12:51:00.028Z",
       updatedAt: "2023-10-26T12:51:00.028Z",
