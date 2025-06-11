@@ -77,6 +77,12 @@ docker compose --profile portal pull
 docker compose --profile portal up
 ```
 
+1. Or if you wish to re-create
+
+```bash
+docker compose --profile portal up --force-recreate
+```
+
 1. Then in another terminal:
 
 ```bash
