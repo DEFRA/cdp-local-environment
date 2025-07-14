@@ -10,7 +10,7 @@ db.entities.updateOne(
       "subType": "Backend",
       "name": "cdp-portal-backend",
       "created": "2016-12-05T11:21:25.000Z",
-      "status": "Success",
+      "status": "Created",
       "teams": [
         {
           "teamId": "aabe63e7-87ef-4beb-a596-c810631fc474",
@@ -32,7 +32,7 @@ db.entities.updateOne(
       "subType": "Frontend",
       "name": "cdp-portal-frontend",
       "created": "2016-12-05T11:21:25.000Z",
-      "status": "Success",
+      "status": "Created",
       "teams": [
         {
           "teamId": "aabe63e7-87ef-4beb-a596-c810631fc474",
@@ -54,7 +54,7 @@ db.entities.updateOne(
       "subType": "Backend",
       "name": "cdp-self-service-ops",
       "created": "2016-12-05T11:21:25.000Z",
-      "status": "Success",
+      "status": "Created",
       "teams": [
         {
           "teamId": "aabe63e7-87ef-4beb-a596-c810631fc474",
@@ -76,7 +76,7 @@ db.entities.updateOne(
       "subType": "Journey",
       "name": "cdp-env-test-suite",
       "created": "2016-12-05T11:21:25.000Z",
-      "status": "Success",
+      "status": "Created",
       "teams": [
         {
           "teamId": "aabe63e7-87ef-4beb-a596-c810631fc474",
@@ -98,7 +98,7 @@ db.entities.updateOne(
       "subType": "Backend",
       "name": "cdp-postgres-service",
       "created": "2016-12-05T11:21:25.000Z",
-      "status": "Success",
+      "status": "Created",
       "teams": [
         {
           "teamId": "aabe63e7-87ef-4beb-a596-c810631fc474",
