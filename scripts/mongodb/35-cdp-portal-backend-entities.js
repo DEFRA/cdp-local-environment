@@ -109,3 +109,26 @@ db.entities.updateOne(
   },
   { upsert: true }
 );
+
+db.entities.updateOne(
+  {
+    name: "cdp-postgres-service"
+  },
+  {
+    $setOnInsert: {
+      "type": "Microservice",
+      "subType": "Backend",
+      "name": "tenant-backend",
+      "created": "2016-12-05T11:21:25.000Z",
+      "status": "Success",
+      "teams": [
+        {
+          "teamId": "44c7fa74-40e7-470d-a18a-b78a60bbef8e",
+          "name": "TenantTeam1"
+        }
+      ]
+    },
+  },
+  { upsert: true }
+);
+
