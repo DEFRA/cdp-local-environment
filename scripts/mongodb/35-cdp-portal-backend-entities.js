@@ -112,7 +112,7 @@ db.entities.updateOne(
 
 db.entities.updateOne(
   {
-    name: "cdp-postgres-service"
+    name: "tenant-backend"
   },
   {
     $setOnInsert: {
