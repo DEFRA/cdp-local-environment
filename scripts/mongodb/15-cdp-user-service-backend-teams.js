@@ -75,6 +75,7 @@ db.teams.updateOne(
         new ObjectId("674def9d30093e3a3aa49d35"),
         new ObjectId("6824a65285c4bfd4d458ab74")
       ],
+      alertEmailAddresses: [ 'platform@cdp.local' ],
       createdAt: "2023-10-26T12:51:00.028Z",
       updatedAt: "2023-10-26T12:51:00.028Z",
     },

@@ -41,6 +41,16 @@ aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-nam
 
 echo Setting up CDP Notify
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name cdp_grafana_alerts
+aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name cdp-notify-github-events
+aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name cdp_grafana_alerts
+aws --endpoint $LOCALSTACK_URL sns create-topic --region $AWS_REGION --name cdp-notification
+
+echo Setting up CDP Notify
+aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name cdp_grafana_alerts
+aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name cdp-notify-github-events
+aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name stub-slack-messages
+aws --endpoint $LOCALSTACK_URL sns create-topic --region $AWS_REGION --name cdp-notification
+aws --endpoint $LOCALSTACK_URL sns subscribe --region $AWS_REGION --topic-arn arn:aws:sns:$AWS_REGION:000000000000:cdp-notification --protocol sqs --notification-endpoint  arn:aws:sqs:$AWS_REGION:000000000000:stub-slack-messages
 
 echo Setting up stub test suite runs
 aws --endpoint $LOCALSTACK_URL sqs create-queue --region $AWS_REGION --queue-name run-test-from-portal
