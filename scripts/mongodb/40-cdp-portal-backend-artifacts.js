@@ -239,3 +239,33 @@ db.artifacts.updateOne(
   },
   { upsert: true }
 );
+
+db.artifacts.updateOne(
+  {
+    repo: "cdp-service-prototype",
+    tag: "0.1.0",
+  },
+  {
+    $setOnInsert: {
+      created: "2024-11-02T16:24:06.004Z",
+      repo: "cdp-service-prototype",
+      tag: "0.1.0",
+      sha256:
+        "sha256:f2b8d79f6d70fd88b6bfce2d1bd5572ced3a8f64b5cc9537223f845665c2405e",
+      githubUrl: "https://github.com/DEFRA/cdp-service-prototype",
+      serviceName: "cdp-service-prototype",
+      scannerVersion: 1,
+      teams: [
+        {
+          github: "cdp-platform",
+          teamId: "aabe63e7-87ef-4beb-a596-c810631fc474",
+          name: "Platform",
+        },
+      ],
+      files: [],
+      semVer: Long(6553600),
+      runMode: "service",
+    },
+  },
+  { upsert: true }
+);
