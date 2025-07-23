@@ -237,7 +237,7 @@ For some examples, see `./scripts/portal`.
 
 ## Mixing with local running services
 
-I.e mixing with non docker compose services, e.g. from your IDE.
+I.e. mixing with non docker compose services, e.g. from your IDE.
 
 * Stop the compose service
 

@@ -283,6 +283,37 @@ services:
       - portal
 
 ################################################################################
+  cdp-notify:
+    image: defradigital/cdp-notify:${CDP_NOTIFY:-latest}
+    container_name: cdp-notify
+    networks:
+      - cdpnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "cdp.127.0.0.1.sslip.io:host-gateway"
+      - "cdp.--1.sslip.io:host-gateway"
+    env_file:
+      - ./config/local-defaults.env
+      - ./config/cdp-notify.env
+    ports:
+      - 3007:3007
+    environment:
+      - PORT=3007
+    depends_on:
+      localstack:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      redis:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:3007"]
+      interval: 3s
+      start_period: 2s
+    profiles:
+      - portal
+
+################################################################################
 
 volumes:
   cdp-infra-mongodb-data:

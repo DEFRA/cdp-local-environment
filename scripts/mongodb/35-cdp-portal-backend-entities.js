@@ -120,7 +120,7 @@ db.entities.updateOne(
       "subType": "Backend",
       "name": "tenant-backend",
       "created": "2016-12-05T11:21:25.000Z",
-      "status": "Success",
+      "status": "Created",
       "teams": [
         {
           "teamId": "44c7fa74-40e7-470d-a18a-b78a60bbef8e",
@@ -131,4 +131,26 @@ db.entities.updateOne(
   },
   { upsert: true }
 );
+
+db.entities.updateOne(
+  {
+    name: "cdp-service-prototype"
+  },
+  {
+    $setOnInsert: {
+      "type": "Prototype",
+      "name": "cdp-service-prototype",
+      "created": "2024-12-05T11:21:25.000Z",
+      "status": "Success",
+      "teams": [
+        {
+          "teamId": "aabe63e7-87ef-4beb-a596-c810631fc474",
+          "name": "Platform"
+        }
+      ]
+    },
+  },
+  { upsert: true }
+);
+
 

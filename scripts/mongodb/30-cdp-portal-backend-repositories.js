@@ -161,3 +161,31 @@ db.repositories.updateOne(
   },
   { upsert: true }
 );
+
+
+db.repositories.updateOne(
+  {
+    _id: "cdp-service-prototype",
+  },
+  {
+    $setOnInsert: {
+      _id: "cdp-service-prototype",
+      description: "cdp-service-prototype",
+      primaryLanguage: "JavaScript",
+      url: "https://github.com/DEFRA/cdp-service-prototype",
+      isArchived: false,
+      isTemplate: false,
+      isPrivate: false,
+      createdAt: [63616533685000000, 0],
+      teams: [
+        {
+          github: "cdp-platform",
+          teamId: "aabe63e7-87ef-4beb-a596-c810631fc474",
+          name: "Platform",
+        },
+      ],
+      topics: ["cdp", "service", "prototype", "node"],
+    },
+  },
+  { upsert: true }
+);
